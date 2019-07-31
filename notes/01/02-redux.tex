@@ -1,0 +1,295 @@
+\href{https://redux.js.org}{Redux} is a library that handles application state management. It's one of the most common ways to handle application state with React (along with \href{https://mobx.js.org}{MobX}). You can also use Redux with other view libraries or even with plain old DOM code.
+\\
+
+At first Redux can seem quite daunting and complicated, but it manages to capture most of the complexities of app state management in only a few key concepts.
+\\
+
+Redux consists of three parts:
+
+\begin{enumerate}
+    \item \textbf{The Store}: The store keeps track of the current \textbf{state}. We can \textbf{subscribe} to it to listen for changes and we can \textbf{dispatch} actions to it. We can't change the state directly, only via the store.
+
+    \item \textbf{Actions}: Actions are simple messages (POJOs\footnote{Plain Old JavaScript Objects}) that we \textbf{dispatch} to the store.
+
+    \item \textbf{Reducers}: Reducers take an action and \textbf{transform} the current state in some way. This updates the store which then lets any subscribers know that it's changed.
+\end{enumerate}
+
+Basically Redux takes the idea of lifting state to its logical conclusion: all our different components need to know about each other, so we lift the state to the top most level.
+
+
+\pagebreak
+
+
+\begin{infobox}{Avoiding Redux}
+    Because it takes a while to learn, there is a temptation to avoid something like Redux and just do all of your state management within React components. This is all well and good for basic apps with a few components which don't have a lot of shared state, but it becomes incredibly complicated once you start working on more complex apps. By using Redux from the start you can avoid these issues.
+    \\
+
+    You also find that every month or so there's a new app state management library that is like Redux but tries to make some aspect of it simpler. The examples given for these libraries do indeed seem to simplify some aspect of Redux\textellipsis{} but they only ever show examples using a few components.
+    \\
+
+    Once you start writing bigger apps you'll really appreciate the flexibility that Redux gives you.
+\end{infobox}
+
+\hr
+
+Let's build our first proper app: one where the data and views are separate. We're going to use a really basic \texttt{<App>} component:
+
+\inputminted{jsx}{01/figures/02/01-App.jsx}
+
+We want to get it so that when we click on the buttons they change the value of the counter. But our state is going to live inside Redux, not inside the component itself.
+
+
+\section{Initial State}
+
+First we need to decide on the shape of our state and create an \textbf{initial state}. This is much like the initial state for a React component, except that it represents the state for the \textit{entire app}.
+\\
+
+In this case we just need to store a single number:
+
+\stdinputminted{jsx}{01/figures/02/02-initial.js}
+
+We create an object literal with a \texttt{count} property and set it equal to \texttt{1}.
+\\
+
+As our app gains more functionality we'll need to add additional properties to our state.
+
+
+
+\section{Reducers}
+
+Next we need to decide how we want to be able to change the state. We put these inside a \textbf{reducer}. The reducer is called by the store whenever an action is dispatched. It gets given the \textit{current} state as well as the action that was dispatched.
+\\
+
+This is the \textit{only} way that the state can be changed. This means that just by looking at the initial state and the reducer it's possible to work out all possible ways in which the state can be changed.
+\\
+
+Actions, which we'll get to shortly, are just an object literal with a \texttt{type} property. By passing different \texttt{type}s, we can transform the state in different ways. For now, let's just accept an \texttt{increment} type, which will add \texttt{1} to the current \texttt{count}:
+
+\inputminted{jsx}{01/figures/02/03-reducer.js}
+
+The reducer has to return a \textit{new} state object: you can't just update a property and then return it. This is where the spread operator comes in handy. If you ever think you've updated the state but nothing re-renders, it's probably because you've updated an existing data structure, rather than returning a new one.
+\\
+
+The reducer is just a regular JavaScript function, so we can test that it works without needing to use Redux:
+
+
+\inputminted{jsx}{01/figures/02/04-reducer-test.js}
+
+
+\section{The Store}
+
+Once we've got an initial state and a reducer, we can create the \textbf{store}. This is a wrapper around our state: it allows us to dispatch actions, which will change the state, and subscribe to any changes, so we can get the latest state. Importantly, we can't access the state directly as it's wrapped inside the store.
+\\
+
+First install Redux:
+
+\begin{minted}{bash}
+    npm install redux
+\end{minted}
+
+Then import \texttt{createStore}:
+
+\begin{minted}{jsx}
+    import { createStore } from "redux";
+\end{minted}
+
+We can then pass the initial state and reducer to \texttt{createStore}, which gives us back a new Redux store:
+
+\inputminted{jsx}{01/figures/02/05-createStore.js}
+
+
+
+\section{Subscribing}
+
+Next, we will \textbf{subscribe} to the store, which will let us know when the state changes. We pass it a function that will run whenever the state is changed. This gives us a single place to deal with anything that needs to be updated on the page.
+\\
+
+We can use the \texttt{getState()} method of \texttt{store} to \textit{get} the current state. This doesn't allow us to change the state - we can only do that with actions.
+
+\inputminted{jsx}{01/figures/02/06-subscribe.js}
+
+
+
+\section{Actions}
+
+Finally, we can \textbf{dispatch} some actions: each time we dispatch an action, the store runs the reducer function for us, which looks at the action \texttt{type} property and transforms the state appropriately. Once the reducer has returned a value, the function we passed to \texttt{store.subscribe()} will be run and we can update our page appropriately.
+
+\inputminted{jsx}{01/figures/02/07-dispatch.js}
+
+\hr
+
+
+Putting it all together in the \texttt{index.js} file:
+
+\inputminted{jsx}{01/figures/02/08-all.js}
+
+If you open this in the browser you should see \texttt{2} logged in the console: the value of the counter after the increment action has run. Try dispatching the \texttt{increment} action multiple times and you'll see that a new value is logged each time.
+\\
+
+To recap:
+
+\begin{itemize}
+    \item We setup an \textbf{initial state}\footnote{Remember, the initial state is just the values the state will have when we first load the app. Once we start dispatching actions the state will change, but the store keeps track of it for us.}
+    \item We create a \textbf{reducer}, which takes different actions and \textbf{transforms} our data based on the action's \texttt{type} property
+    \item We create our \textbf{store} passing it our reducer and the initial state
+    \item We \textbf{subscribe} to the store, so that we can respond whenever the state changes (usually by re-rendering the view)
+    \item We \textbf{dispatch} actions to the store to make changes to our state (usually in event handlers)
+\end{itemize}
+
+If you've understood up to here then you understand Redux. The harder part is getting it to work with React!
+
+
+\img{11cm}{01/img/redux}{1em}{The Redux Architecture}
+
+
+\section{Working with React}
+
+Now let's get Redux working with React. We'll need to tell React to re-render the \texttt{App} component whenever the state changes. We can do this by calling \texttt{ReactDOM}'s \texttt{render()} method inside our \texttt{subscribe} function:
+
+\inputminted{jsx}{01/figures/02/10-render.js}
+
+We can pass the current \texttt{count} through using a prop on \texttt{<App>}. So we need to update the \texttt{<App>} component to accept the \texttt{count} prop:
+
+\inputminted{jsx}{01/figures/02/11-value.jsx}
+
+We'll also need to handle the increment button click. Whenever the user clicks the ``+'' button we want to dispatch an \texttt{increment} action. We can pass this in as an anonymous function for now:
+
+\inputminted{jsx}{01/figures/02/12-props.jsx}
+
+And then add this as an event handler inside our \texttt{<App>}:
+
+\inputminted{jsx}{01/figures/02/13-handleIncrement.jsx}
+
+
+Generally we'll only use \texttt{dispatch} for event handlers: if the user hasn't done anything then there's not normally a good reason for the state to change. If you need to make multiple changes to the state in response to a specific action then you should put all of that code in the reducer.
+
+
+\pagebreak
+
+
+\begin{infobox}{Redux Dev Tools}
+    There's a really useful browser plugin called \href{https://github.com/zalmoxisus/redux-devtools-extension}{Redux Dev Tools}.
+    \\
+
+    Once you've added it to your browser you need to add an extra argument to your \texttt{createStore} call, which links everything up:
+
+    \inputminted{jsx}{01/figures/02/09-dev-tools.js}
+
+    The Redux Dev Tools let you look at what's going on with the Redux store: which actions have been dispatched, how the state has changed each time, and the current state. It even lets you change the history of your app by skipping actions or rewinding time. This is only possible because the app's state is fully controlled by Redux.
+\end{infobox}
+
+
+\hr
+
+
+Next, let's get the decrement and reset buttons working.
+\\
+
+To add these behaviours we just need to add two more reducers:
+
+\inputminted{jsx}{01/figures/02/14-decrement.js}
+
+The \texttt{decrement} action simply subtracts \texttt{1} from \texttt{count}. The \texttt{reset} action sets the state back to the value of \texttt{initial}: resetting everything back to the initial values.\footnote{This is really neat. It lets you reset the \textit{entire} state of the app in one line. If you've spread your state logic around lots of separate components, this is incredibly complicated to do. In the pre-Redux days I once spent an entire day trying to fully reset the state of my entire app, spread around hundreds of files. I eventually gave up and just told the browser to refresh the page.}
+\\
+
+Now add props to pass in a dispatch function for each action:
+
+\inputminted{jsx}{01/figures/02/15-handlers.jsx}
+
+And add the \texttt{onClick} event handlers for each button in \texttt{<App>}:
+
+\inputminted{jsx}{01/figures/02/16-App.jsx}
+
+
+Because actions are just object literals we can pass along any additional information that we like to the reducer. This is often referred to as the action's \textbf{payload}. For example we could combine the \texttt{increment} and \texttt{decrement} actions by instead passing along a number to change by:
+
+\inputminted{jsx}{01/figures/02/17-change.js}
+
+Now we can pass in a \texttt{amount} property to change the value by any amount we like:
+
+\inputminted{jsx}{01/figures/02/18-change-action.js}
+
+
+It's also fairly common practice to pull complex functions out of the reducer to keep our code a bit clearer:
+
+\inputminted{js}{01/figures/02/19-change-fn.js}
+
+
+We can now use object destructuring to tidy up the code:
+
+\inputminted{jsx}{01/figures/02/20-destructure.js}
+
+
+\section{Persistence}
+
+Finally, it would be nice if when we refresh the page we don't lose the app state. We can do this fairly easily by storing the state in \href{https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage}{localStorage}.
+\\
+
+First, install the package:
+
+\begin{minted}{bash}
+    npm install redux-localstorage
+\end{minted}
+
+Then we'll need to update the \texttt{import} statements in \texttt{index.js}:
+
+\begin{minted}{js}
+    import { createStore, compose } from "redux";
+    import persistState from "redux-localstorage";
+\end{minted}
+
+Finally, we need to change how we create the store, to include the localstorage middleware. This is a little bit messy because we want to keep using the Redux developer tools:
+
+\begin{minted}{js}
+    const composeEnhancers =
+        window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+    const store = createStore(
+        reducer,
+        initial,
+        composeEnhancers(persistState())
+    );
+\end{minted}
+
+Now, if we refresh the page you can see that the app state sticks around.
+
+
+\section{What Goes in State?}
+
+When we were writing React components we said it's best to keep your state as slimline as possible: if you can work something out from some other bit of state then you don't need to store it in state as well. This is fine for components, as everything is all in one place, but it's not the case for application state.
+\\
+
+With application state we want to keep \textit{all} of our \textbf{business logic} in one place. Any calculations that need doing with the data of the app should be done inside the reducers. If you have to work something out inside a component then your UI knows too much and is probably tied into your specific use case.
+\\
+
+One way that I often think about whether something belongs in application state or not is to imagine that the app I'm building needs both a regular React app in English and also a React Native version in Spanish. If both versions can share the same application state without needing to repeat any logic inside the equivalent components then you've got the balance right.
+
+
+
+
+\section{Dear God Why‽}
+
+You might be asking yourself, ``Why did we just go to all of that effort to get a bloomin' counter working‽'' And it would, of course, be a bit extreme to use Redux for this particular case. But once your apps start to get more complex, with lots of interconnected components, you'll see that it has many advantages:
+
+\begin{itemize}
+    \item All of your business logic lives in one place: all of the code that is specific to your app lives in the reducers, so you always know where to look for it
+    \item Your React components are just for UI: the components don't need to know anything about what they'll be used for, which means they can be used in different apps without making any changes to them
+    \item You could get rid of React: if you really wanted to you could switch from React to Vue.js (or whatever view framework is currently in vogue) without needing to change any of your application logic
+    \item Your state lives in one place: if you want to persist the current application state it's simply a matter of getting it out of the store. If it was spread between lots of separate components this would be very hard to do. It also allows you to reset the application state with one line of code.
+\end{itemize}
+
+For example, consider changing the background in Trello. If there's a property in the app state called \texttt{backgroundImage} then all we have to do to change the background is update this one property: every component that needs to can get the new value. If this information was stored in the \texttt{<Board>} component, then it's not obvious how a completely separate component in the Menu could affect this.
+\\
+
+Once you get used to the Redux way of doing things (which \textit{will} take a while), you'll begin to appreciate the predictability that it offers.
+
+
+\section{Additional Resources}
+
+\begin{itemize}[leftmargin=*]
+    \item \href{https://redux.js.org/basics}{Redux: Basics}
+    \item \href{https://egghead.io/courses/getting-started-with-redux}{Egghead: Getting Started with Redux}
+    \item \href{https://lorenstewart.me/2016/11/27/a-practical-guide-to-redux/}{A Practical Guide to Redux}
+    \item \href{https://levelup.gitconnected.com/an-unforgettable-way-to-learn-redux-f36afd38c966}{An Unforgettable Way to Learn Redux}
+    \item \href{https://medium.freecodecamp.org/understanding-redux-the-worlds-easiest-guide-to-beginning-redux-c695f45546f6}{Understanding Redux}
+    \item \href{https://www.smashingmagazine.com/2018/07/redux-designers-guide/}{What is Redux? A Designer's Guide}
+\end{itemize}

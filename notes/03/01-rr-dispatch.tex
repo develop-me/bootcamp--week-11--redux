@@ -1,0 +1,183 @@
+Next we'll want to update iCounter so that we don't have to pass the event handler functions via the \texttt{<App>} component. We'll do this in much the same way as with the \texttt{<Value>} component, except this time we're not interested in the state, we're interested in \textit{dispatching} actions.
+\\
+
+First rename the \texttt{<Buttons>} component from  \texttt{src/components/Buttons/index.jsx} to \texttt{src/components/Buttons/Buttons.jsx} - which will temporarily break our app. Then we'll create a container component in \texttt{src/Buttons/index.js}. This time we're going to use the second argument of \texttt{connect} - this is normally called \texttt{mapDispatchToProps}:
+
+\inputminted{js}{03/figures/01-mapDispatchToProps.js}
+
+Much of this is the same as using \texttt{mapStateToProps}: we import in the \texttt{connect} function, import in the component that we want to pass props to, and use \texttt{connect} at the bottom to export a new component.
+\\
+
+The two key differences are that we pass \texttt{mapDispatchToProps} in as the \textit{second} argument to \texttt{connect} (and pass \texttt{null} in as the first) and the function that we pass it gets passed the Redux store's \texttt{dispatch} method, rather than the latest copy of the state. This allows us to dispatch actions to the store, thus triggering the reducers (which will then update the state, and cause any components using \texttt{mapStateToProps} to re-render).
+
+\img{12cm}{03/img/mapDispatchToProps-before}{2em}{Before: no way to dispatch to the Redux store}
+
+\par\bigskip
+
+\img{14cm}{03/img/mapDispatchToProps-after}{2em}{After: wrap with a component that has access to the Redux store}
+
+
+\section{Action Creators}
+
+In larger apps it's not uncommon for different event handlers to dispatch the same (or similar) actions. For this reason it's common to create \textbf{Action Creators}: functions that create an action for us.
+\\
+
+First, create a file called \texttt{src/data/actions}. Then add action creators for the two action types:\footnote{These could be made shorter using object property shorthand and skipping the \texttt{return} by wrapping in brackets.}
+
+\inputminted{js}{03/figures/02-action-creators.js}
+
+We export each function separately, as we might require them in different files.
+\\
+
+Now we can use these in the container component:
+
+\inputminted{js}{03/figures/03-ButtonContainer.js}
+
+All we've done is created some functions to create the action object literals for us, rather than writing them out each time.
+
+
+\section{Forms}
+
+Next we need to consider forms. Remember that in React if we have an \texttt{<input>} then we create a \textbf{controlled component}, where we use the component state to keep track of the value.
+\\
+
+You might naturally assume that this state should be part of the application state - after all, that's where everything else has gone. But in this case it's probably better to keep the state locally: if you have lots of forms with lots of inputs it can get complicated keeping track of them all. Of course we will need to get the value out of the form \textit{at some point}, but not until it is submitted.
+
+\begin{infobox}{The Local State Rule}
+    A good rule of thumb for whether state belongs in the application state, or whether you should just store it locally, is to think:
+
+    \begin{center}
+        ``If I refreshed the page, would I expect this to still be there?''
+    \end{center}
+
+    In the case of a form input, you probably \textit{wouldn't} expect it to still be there on a refresh, but you \textit{would} expect the app to have remembered the data you've added and the settings that you've changed.
+\end{infobox}
+
+Let's add a ``Settings'' page to our app so that we can change how much the counter goes up by:
+
+\inputminted{jsx}{03/figures/04-Settings.jsx}
+
+Currently it's just a basic controlled component with an \texttt{<input>} element and a ``Save'' button. On submit we just prevent default. We'll use ReactRouter to show this page when the user visits \texttt{/settings}.
+\\
+
+We set the initial \texttt{step} state to \texttt{props.step}, so we need to pass in this value from somewhere. We'll want to store the step value in the application state, so lets add it to the state and then get it passed into the component.
+\\
+
+First, add a \texttt{step} property to the initial state and set it to \texttt{1}:
+
+\begin{minted}{js}
+    const initial = {
+        count: 1,
+        step: 1,
+    };
+\end{minted}
+
+Now we need to pass this value into the \texttt{<Settings>} component. We'll do this by wrapping it in a container component and use \texttt{mapStateToProps}:
+
+\inputminted{js}{03/figures/05-SettingsProps.js}
+
+Try updating the initial state and seeing if the step value changes.
+\\
+
+Next we need to make it so that when the form is submitted the data is dispatched to the store and updates the \texttt{step} value.
+\\
+
+We'll need to dispatch a new type of action, so let's create an action creator for this purpose:
+
+\inputminted{js}{03/figures/06-action.js}
+
+It's almost identical to the \texttt{change} action, except for the \texttt{type}.
+\\
+
+Now we need to dispatch this action when the form is submitted, passing along the data from the form. To do this we'll use the trick we learnt in week 9 for passing data out of a component: pass in a function that accepts an argument and then call that function from within the component.
+\\
+
+We can pass in a function that has access to \texttt{dispatch} by using \texttt{mapDispatchToProps}:
+
+\inputminted{js}{03/figures/07-Settings.js}
+
+Now we just need to call this function from inside the \texttt{<Settings>} component when the form is submitted:
+
+\inputminted{js}{03/figures/08-Settings.jsx}
+
+If we look in the Redux developer tools we should now see an action being dispatched! But the state isn't changing. The last thing we need to do it update the reducers to do something with this action:
+
+\inputminted{js}{03/figures/09-reducers.js}
+
+Now if we look in the Redux developer tools you should see that the state is being updated.
+\\
+
+Finally, to actually update the counter by the right amount we need to update the \texttt{change} reducer:
+
+\inputminted{js}{03/figures/10-change.js}
+
+
+
+
+
+\section{Programmatic Navigation}
+
+It would be nice if our app could navigate to the homepage once we save the settings. To do this we can use ReactRouter's \textbf{history} functionality.
+\\
+
+First, create a new file \texttt{src/history.js}:
+
+\inputminted{js}{03/figures/11-history.js}
+
+Then add a \texttt{history} prop to your \texttt{<Router>}:
+
+\begin{minted}{javascript}
+    // import your history file
+    import history from "../history";
+
+    // use Router instead of BrowserRouter
+    import { Router } from "react-router-dom";
+\end{minted}
+
+\begin{minted}{javascript}
+    // pass history in as a prop to the Router
+    <Router history={ history }>
+\end{minted}
+
+Now we can import this file and use it elsewhere to change the URL:
+
+
+\begin{minted}{jsx}
+    import history from "../../history";
+\end{minted}
+
+\inputminted{js}{03/figures/12-mapDispatch.js}
+
+
+
+\section{Process}
+
+As with React components there's an order you can do things in which will mean that nothing breaks as you go along:
+
+\begin{enumerate}
+    \item Create the JSX template
+    \item If your component needs to read values from state:
+        \begin{enumerate}
+            \item If you haven't got one already, create a container component using \texttt{connect}
+            \item Use \texttt{mapStateToProps} to pass in any of the state that's needed
+            \item Update the initial state to see if it changes the UI
+        \end{enumerate}
+    \item If your component needs to update state:
+        \begin{enumerate}
+            \item If you haven't got one already, create a container component using \texttt{connect}
+            \item Create the necessary action creators
+            \item Use \texttt{mapDispatchToProps} to pass in any event handlers, using your action creators
+            \item Update your reducers to handle the new action type
+        \end{enumerate}
+\end{enumerate}
+
+Check that nothing has broken at each stage by viewing it in the browser.
+
+
+\section{Additional Resources}
+
+\begin{itemize}[leftmargin=*]
+    \item \href{https://react-redux.js.org/using-react-redux/connect-mapdispatch}{React Redux: \texttt{mapDispatchToProps}}
+    \item \href{https://learn.co/lessons/map-dispatch-to-props-readme}{\texttt{mapDispatchToProps}}
+    \item \href{https://github.com/ReactTraining/history}{ReactRouter History}
+\end{itemize}

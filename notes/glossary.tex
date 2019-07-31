@@ -1,0 +1,38 @@
+\begin{itemize}[leftmargin=*]
+    \item
+        \textbf{Action Creator}:
+        A function that generates a Redux action - these are not a necessary part of Redux, they just make actions more reusable
+    \item
+        \textbf{Action}:
+        An object literal which tells our reducers how to transform the state
+    \item
+        \textbf{API action creator}:
+        An action creator that makes an API request and then dispatches a regular \textbf{state action} when the API response comes back
+    \item
+        \textbf{Business Logic}:
+        The application logic specific to how data is transformed/calculated
+    \item
+        \textbf{Container Component}:
+        A file that uses \textbf{connect} to wrap a standard component, allowing us to pass in props that can access \textbf{store}
+    \item
+        \textbf{Dispatch}:
+        We dispatch an action to the store in order to change the state
+    \item
+        \textbf{Payload}:
+        The additional data sent with an action
+    \item
+        \textbf{Provider}:
+        React redux wraps our app with a \texttt{<Provider>} component, which allows us to access the store using \textbf{connect}
+    \item
+        \textbf{Reducer}:
+        Transforms the state based on the action that was dispatched
+    \item
+        \textbf{Store}:
+        Keeps track of our state for us
+    \item
+        \textbf{Subscribe}:
+        We subscribe to the store in order to track changes to the state
+    \item
+        \textbf{Thunk}:
+        A redux \textbf{middleware} that allows us to dispatch from our actions
+\end{itemize}

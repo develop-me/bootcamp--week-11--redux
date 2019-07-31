@@ -1,0 +1,67 @@
+We've got Redux working with React, but there are a few issues:
+
+\begin{itemize}
+    \item Currently if our app has multiple components we'd have to pass down values from state \textit{and} the event handlers using props, which could get messy in a more complex app. It would also mean some components need to accept props purely to pass them through to other components, which makes them less reusable.
+    \item The entire React app re-renders whenever the state updates: this is very inefficient, as it's likely that the state change only affects a few components. It would be better if we only re-render the components that use the specific bit of state that has changed.
+\end{itemize}
+
+We \textit{could} pass \texttt{store} down to all our components using props so that they can read the state and dispatch actions, but adding a \texttt{store} prop to every single component will get cumbersome even in a small app. It would also make all of our components dependent on Redux, which makes them much less reusable.
+\\
+
+That's where the \texttt{react-redux} library comes in: its sole purpose is to hook up our Redux store with our React components.
+
+\begin{minted}{bash}
+    npm install react-redux
+\end{minted}
+
+The \texttt{react-redux} library wraps our entire app in a \textbf{<Provider>} component, which does some stuff with the \texttt{children} prop behind the scenes so that we can \textbf{connect} to \texttt{store} from anywhere in our app.
+\\
+
+We need to \texttt{import} the \texttt{<Provider>} component from \texttt{react-redux} and wrap it around our entire app. Inside \texttt{index.js}:
+
+\begin{minted}{jsx}
+    import { Provider } from "react-redux";
+\end{minted}
+
+\inputminted{jsx}{02/figures/01/01-index.js}
+
+The \texttt{<Provider>} attaches the Redux store to the \texttt{connect()} function. In the next two chapters we'll look at how to use this to subscribe to the store, get data from state, and dispatch actions from any component in our app.
+\\
+
+Now we don't need to manually subscribe to the store, as the \texttt{<Provider>} does this for us. So we can remove the \texttt{render} function from \texttt{index.js}.\footnote{If you were starting from scratch now, you would just use the \texttt{<Provider>} straight away and not write the render code at all.}
+\\
+
+While we're in \texttt{index.js} it might also be worth splitting out some of the Redux code into separate files. We'll put the reducers into \texttt{src/data/reducers.js} and the initial state into \texttt{src/data/initial.js}:\footnote{As with the \texttt{<Provider>}, we'd probably do this from the beginning when starting an app from scratch.}
+
+\begin{minted}{js}
+    import initial from "./data/initial";
+    import reducers from "./data/reducers";
+\end{minted}
+
+
+\pagebreak
+
+
+\begin{infobox}{The Context API}
+    The Context API was added to React in version 16.4. It was quickly followed by a large number of blog posts suggesting that now we had the Context API we didn't need Redux anymore.
+    \\
+
+    This conflates Redux (the state management library) with React Redux (the library for joining up React with Redux). The Context API \textit{can} be used in place of React Redux to pass information between different layers of the component hierarchy without directly passing it through every intermediate layer. However, it does nothing to help with state management.
+    \\
+
+    Since version 6.0 of React Redux it actually uses the Context API under the hood. The Context API is an \textbf{implementation detail}: if you use React Redux version 6.0 or above then you're using it, if you use an older version then you're not - but your usage of React Redux would be exactly the same in both cases.
+    \\
+
+    Personally I prefer using React Redux to using the Context API as it allows you to write your code using just functions. Once you start using Context you have to start worrying about \texttt{this}. And nobody wants that.
+
+    \quoteinline{Context is primarily used when some data needs to be accessible by many components at different nesting levels. Apply it sparingly because it makes component reuse more difficult.}{The React Docs}
+\end{infobox}
+
+
+\section{Additional Resources}
+
+\begin{itemize}[leftmargin=*]
+    \item \href{https://react-redux.js.org}{React Redux}
+    \item \href{https://blog.isquaredsoftware.com/2018/11/react-redux-history-implementation/}{The History and Implementation of React Redux}
+    \item \href{http://reactjs.org/docs/context.html}{React: Context}
+\end{itemize}

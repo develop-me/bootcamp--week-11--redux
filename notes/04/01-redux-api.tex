@@ -1,0 +1,350 @@
+Persisting our state using \texttt{localStorage} is all well and good for a basic app, but it's no good for something like Trello, where the data needs to be viewable by multiple people on different machines. We'll want to use an API to store our data.
+\\
+
+But where are we going to put the API requests?
+
+\begin{itemize}
+    \item Components shouldn't handle data: it limits their re-usability
+    \item Containers are just for hooking up React to Redux: they're still technically part of the ``view'' layer, so we shouldn't put data stuff there either
+    \item Reducers should be pure and return immediately: they can't return unpredictable asynchronous results
+\end{itemize}
+
+This only leaves us with one place where we could put an asynchronous request: our action creators.
+\\
+
+The idea is that we'll have two different types of action creators: \textbf{state action creators} and \textbf{API action creators}. If we just want to update the state without persisting anything via the API then we'll just dispatch a state action as before. However, if we need to make an API call, we'll dispatch an API action creator, which will use Axios to send an API request. Once we get back an API response, we use the data we get back and dispatch a state action to update what the user is seeing.
+
+\img{14cm}{04/img/api-action}{1em}{Simples}
+
+
+\section{Thunks}
+
+However, currently we have no clean way of using \texttt{dispatch} inside our actions. That's where \texttt{thunks} come in.
+\\
+
+The \href{https://github.com/gaearon/redux-thunk}{\texttt{redux-thunk}} \textbf{middleware} adds the ability to dispatch from our actions, so we can put asynchronous code inside an action and then dispatch a new action once we get back a response.
+\\
+
+Although we dispatch thunk actions, they don't have a \texttt{type} property, and so aren't handled directly by our reducers.
+
+
+\subsection{Setup}
+
+Setting up Thunks while keeping Redux Dev Tools working gets a little complicated, but hopefully you can follow along.
+\\
+
+First, install \texttt{redux-thunk}:
+
+\begin{minted}{bash}
+    npm install redux-thunk
+\end{minted}
+
+Next, update your \texttt{redux} import in \texttt{index.js}:
+
+\begin{minted}{jsx}
+    import { createStore, applyMiddleware, compose } from "redux";
+\end{minted}
+
+Then, import \texttt{thunk}:
+
+\begin{minted}{jsx}
+    import thunk from "redux-thunk";
+\end{minted}
+
+Finally, update the call to \texttt{createStore}:
+
+\begin{minted}{jsx}
+    const composeEnhancers =
+        window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+    const store = createStore(
+        reducer,
+        initial,
+        composeEnhancers(applyMiddleware(thunk))
+    );
+\end{minted}
+
+The last bit just mixes together the Redux Dev Tools and the \texttt{thunk} package so that they can all be passed in as one argument to \texttt{createStore}.
+\\
+
+You can remove the \texttt{redux-localstorage} import from \texttt{index.js}, as you'll be using an API to keep track of things.
+
+
+\section{Axios}
+
+We'll also need to get Axios setup for making the API request.
+\\
+
+First install \texttt{axios}:
+
+\begin{minted}{bash}
+    npm install axios
+\end{minted}
+
+Axios gives us the ability to setup a default configuration including a base URL and URL parameters. We can use this to avoid needing to repeat this information with every request.
+\\
+
+Put something like the following (with the correct base URL and key) in \texttt{src/axios.js}:
+
+\begin{minted}{jsx}
+    // import the axios library
+    import axios from "axios";
+
+    // return a new version of axios with useful settings applied
+    export default axios.create({
+        baseURL: "http://username.restful.training/api/counters",
+        params: {
+            key: "b1a4b1a4b1a4-api-key-b1a4b1a4ab1a4",
+        },
+        headers: {
+            Accept: "application/json",
+        },
+    });
+\end{minted}
+
+We can then import \textit{this} file (instead of just \texttt{axios}) to keep our request code nice and clean.
+
+
+\section{Loading}
+
+It's fairly common to want to load some information from an API when you first display a component. Let's update the counter to get the current values from the API.
+\\
+
+We'll need to keep track of whether the app has loaded the API request, so let's add an extra bit of state:
+
+\begin{minted}{js}
+    const initial = {
+        // set it to false initially
+        loaded: false,
+        // ...etc.
+    };
+\end{minted}
+
+
+We're going to create a \texttt{<Loading>} component which we can show while the user is waiting for a response:
+
+\inputminted{jsx}{04/figures/01-Loading.jsx}
+
+We've created a class based component (you'll see why later) that accepts a \texttt{children} and a \texttt{loaded} prop. We can now wrap the two parts of our app in this component and if \texttt{loaded} is \texttt{true} they will display, otherwise it will show a loading animation.
+\\
+
+We'll need to wrap the main components:
+
+\begin{minted}{jsx}
+    <Loading>
+        <p><Link to="/settings">Settings</Link></p>
+        <Value />
+        <Buttons/>
+    </Loading>
+\end{minted}
+
+And also the settings component (in case the user loads \texttt{/settings} initially):
+
+\begin{minted}{jsx}
+    <Loading>
+        <Settings />
+    </Loading>
+\end{minted}
+
+Let's wrap the \texttt{<Loading>} component with a container component so that it can access the \texttt{loaded} property from state:
+
+\begin{minted}{js}
+    import { connect } from "react-redux";
+    import Loading from "./Loading";
+
+    const mapStateToProps = ({ loaded }) => ({
+        loaded,
+    });
+
+    export default connect(mapStateToProps)(Loading);
+\end{minted}
+
+Now, it looks like our app is always loading. We'll need to do an API request and, when it's successful, let the \texttt{<Loading>} component know about it. We can use the \texttt{componentDidMount} method to trigger an action when the component first shows:
+
+\begin{minted}{js}
+    componentDidMount() {
+        if (!this.props.loaded) {
+            this.props.handleLoad();
+        }
+    }
+\end{minted}
+
+First, check to see if \texttt{loaded} is \texttt{true}, because if it is there's no point triggering an action. If not then call the \texttt{handleLoad} prop.
+\\
+
+We'll need to add the \texttt{handleLoad} prop next:
+
+\begin{minted}{js}
+    // ...etc.
+
+    // we'll need to dispatch and action, so we need mapDispatchToProps
+    // just put a console.log() in for now
+    const mapDispatchToProps = (dispatch) => ({
+        handleLoad: () => console.log("loaded"),
+    });
+
+    // make sure to add mapDispatchToProps into connect
+    export default connect(mapStateToProps, mapDispatchToProps)(Value);
+\end{minted}
+
+We're going to dispatch our first \textbf{API action creator}. It's going to look something like this:
+
+\begin{minted}{js}
+    // import in the pre-configured axios object
+    import axios from "../../axios";
+
+    // create a function that returns another function
+    // the second function takes an argument that
+    // represents dispatch
+    export const getCounter = () => dispatch => {
+        // now use axios to make an API request
+        axios.get("/").then(({ data }) => {
+            console.log(data);
+        });
+    };
+\end{minted}
+
+We're using thunks for the first time. A thunk lets us return a function from an action creator. The function we return should accept \texttt{dispatch} as it's first argument. This function is then called when we dispatch the API action. This lets us run whatever code we like in the action creator and then dispatch another action at a later point.
+\\
+
+We're going to make a request to the API, wait for it to return the data, and then once it does dispatch a regular \textbf{state action}, which will trigger the reducers in the Redux store.
+\\
+
+Let's update the \texttt{mapDispatchToProps} to call this API action creator:
+
+\begin{minted}{js}
+    import { getCounter } from "../../data/actions/api";
+
+    // ...etc.
+
+    const mapDispatchToProps = (dispatch) => ({
+        handleLoad: () => dispatch(getCounter()),
+    });
+\end{minted}
+
+Now if we look in the ``Network'' tab of Developer Tools, we should see a \texttt{GET} request when the \texttt{<Loading>} component loads. Now we just need to update the API action so that it updates the app state.
+\\
+
+First we'll need to create a state action:
+
+\begin{minted}{jsx}
+    export const loaded = ({ count, step }) => {
+        return {
+            type: "loaded",
+            count,
+            step,
+        };
+    };
+\end{minted}
+
+And then call this from the API action creator:
+
+\begin{minted}{js}
+    axios.get("/").then(({ data }) => {
+        // pass the data property of the API data
+        dispatch(loaded(data.data));
+    });
+\end{minted}
+
+Finally, we need to add a reducer to handle the new \texttt{loaded} action:
+
+\begin{minted}{js}
+    // destructure the action
+    const loaded = (state, { count, step }) => ({
+        ...state,
+        // set loaded to true
+        loaded: true,
+        count,
+        step,
+    });
+
+    const reducer = (state, action) => {
+        switch (action.type) {
+            case "loaded": return loaded(state, action);
+            // ...etc.
+        }
+    };
+\end{minted}
+
+
+\section{Sending Data}
+
+It's also common to need to send data to the API. Let's update the Settings form so it submits the new \texttt{step} value to the API. First, let's create the API action:
+
+\begin{minted}{js}
+    // import in existing state action
+    import { step } from "./state";
+
+    // accept a value argument
+    export const putStep = value => dispatch => {
+        // make a PUT request
+        axios.put("/", {
+            // pass along the data to the API
+            // can pass in a regular object literal
+            // axios will convert into JSON
+            step: value
+        }).then(({ data }) => {
+            // get the step result off the data
+            // pass it along to the existing step action
+            dispatch(step(data.data.step));
+        });
+    };
+\end{minted}
+
+We can call the existing \texttt{step} action creator once the API request comes back.
+\\
+
+Now we just need to update the \texttt{<Settings>} container component to use the API action instead:
+
+\begin{minted}{js}
+    import { putStep } from "../../data/actions/api";
+
+    // ...etc.
+
+    const mapDispatchToProps = dispatch => {
+        return {
+            handleSave: value => {
+                dispatch(putStep(value));
+                history.push("/");
+            },
+        };
+    };
+\end{minted}
+
+
+\hr
+
+We haven't got the full functionality of iCounter working with the API, but we have demonstrated all of the key concepts with making API requests.
+
+
+\section{Summary}
+
+It might look complicated, but this architecture scales well from really simple apps to complex ones like Trello.
+
+\img{14cm}{04/img/react-redux-circle}{1em}{The whole shebang}
+
+\begin{itemize}
+    \item If we need to do something with the API we'll need to create an \textbf{API action creator} which will make an API request
+    \item Once we get back an API response, we pass that along to a \textbf{state action creator} which will update the state so that the user interface updates with the change
+    \item As before we use \texttt{mapDispatchToProps} to let our components \texttt{dispatch} actions
+    \item We use the \texttt{componentDidMount} method if we need to \texttt{dispatch} when a component first loads
+\end{itemize}
+
+Throughout this process you should use Redux Developer Tools and the console and Network tabs to keep track of what's going on.
+
+\subsection{Tips}
+
+It's a good idea to name your API action creators things like \textbf{get}Article, \textbf{post}Article, \textbf{delete}Article - using the HTTP methods. For your state actions use other names, like \texttt{addArticle}, \texttt{updateArticle}, \texttt{removeArticle}.
+
+
+
+
+
+
+\section{Additional Resources}
+
+\begin{itemize}[leftmargin=*]
+    \item \href{https://github.com/gaearon/redux-thunk}{Redux Thunk}
+    \item \href{https://daveceddia.com/where-fetch-data-componentwillmount-vs-componentdidmount/}{Where to fetch data}
+    \item \href{https://developmentarc.gitbooks.io/react-indepth/content/life_cycle/the_life_cycle_recap.html}{React Lifecycle Events}
+\end{itemize}

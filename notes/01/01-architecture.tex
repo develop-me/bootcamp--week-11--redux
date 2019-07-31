@@ -1,0 +1,39 @@
+\quoteinline{A complex system that works is invariably found to have evolved from a simple system that worked. A complex system designed from scratch never works and cannot be patched up to make it work. You have to start over with a working simple system.}{Gall's Law}
+
+\quoteinline{Good architecture is necessary to give programs enough structure to be able to grow large without collapsing into a puddle of confusion}{Douglas Crockford}
+
+All the components that we've built so far have been very simple and, with the exception of the lifting state examples, have not needed to interact with any other components in our app. But consider a web-app like Trello:
+
+\img{\textwidth}{01/img/01-trello}{0em}{A Trello board}
+
+It consists of many different components: a board component, a menu component, list components, list item components, and many more. Most of these components need to affect and know stuff about many other components. For example, the ``Activity'' section needs to update whenever the user does pretty much anything. And the board background needs to change if the ``Change Background'' option is used in the Menu.
+\\
+
+Because React has one-way data flow, we know that the only way for components to interact with each other is to store the state higher-up the component hierarchy (``lifting'' state). This might at first seem like a limitation: if we had two-way data flow then this would not be necessary. But, remember, once you introduce two-way data flow components are no longer reusable as they become tied to the components that they are used in. If you have two-way data flow throughout your entire app it becomes impossible to know where certain bits of logic belong and it quickly becomes a mess of interconnected components that all need to know about all the other components.
+\\
+
+Hopefully by this point in the course you're starting to see a common theme: write small easy to understand ``black boxes'' and then combine them to create more complex behaviour:
+
+\begin{itemize}
+    \item Functions: create functions that do a single thing well, once you've written them you just need to know \textit{what} they do, not \textit{how} they do it
+    \item PHP Interfaces: create classes with a predictable way of interacting with them (method signatures), once you've written them all you need to know is \textit{what} data to pass to them, not \textit{how} they work inside
+    \item React Components: create simple UI components and then combine them together to create more complex UIs, all you need to know is \textit{what} props to give to the component not \textit{how} they are used internally
+\end{itemize}
+
+There's a reason this keeps coming up: brains are pretty incredible things\footnote{Citation needed}, but they're still fairly limited. You can't be expected to hold how every single aspect of your program works in your head. So we find ways of writing code where once we've got something working we don't need to worry about \textit{how} it works, just \textit{what} it needs to work.
+\\
+
+The key concept of a React + Redux app is that we can build complex apps out of simple components. It's not uncommon, when faced with building a complex app, to end up with \textit{complicated} code: files where it's hard to tell what anything is doing. But, ideally, \textit{no single part of our app should be difficult to understand on its own}. However, the joining up of all these small parts can produce very complex behaviour.
+
+
+\quoteinline{There are two ways of constructing a software design. One way is to make it so simple that there are obviously no deficiencies. And the other way is to make it so complicated that there are no obvious deficiencies}{C.A.R. Hoare}
+
+\section{Additional Resources}
+
+\begin{itemize}[leftmargin=*]
+    \item \href{https://en.wikipedia.org/wiki/Separation_of_concerns}{Wikipedia: Separation of Concerns}
+    \item \href{https://en.wikipedia.org/wiki/Model–view–controller}{MVC} - a common pattern for separation of concerns
+    \item \href{http://peter.michaux.ca/articles/mvc-architecture-for-javascript-applications}{MVC Architecture for JavaScript Applications} - an old article, but it explains the concept well
+    \item \href{https://blog.usejournal.com/10-things-you-will-eventually-learn-about-javascript-projects-efd7646b958a}{10 Things You Will Eventually Learn About JS Projects}
+    \item \href{https://www.matthewgerstman.com/functional-programming-fundamentals/}{Functional Programming Fundamentals}
+\end{itemize}

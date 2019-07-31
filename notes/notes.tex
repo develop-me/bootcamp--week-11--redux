@@ -1,0 +1,63 @@
+% setup the document
+\documentclass[b5paper,openany]{book}
+
+% setup variables ------------------------------
+
+% your name
+\newcommand\instructor{Mark Wales}
+
+% the week number
+\newcommand\weekno{11}
+
+% week main title
+\newcommand\maintitle{State Management}
+
+% week subtitle
+\newcommand\subtitle{with Redux}
+
+% link to notes - relative to github.com/develop-me/
+\newcommand\github{week-11--redux/blob/master/notes/}
+
+% setup functions, styling, etc.
+\input{../../templates/template.tex}
+
+% the structure of the document
+\begin{document}
+
+% render the title page (uses variables above)
+\tp
+
+\quotepage{I have not failed. I've just found 10,000 ways that won't work.}{Thomas A. Edison}
+
+\tableofcontents
+
+\input{../../templates/preface.tex}
+
+\chapter{Application Architecture}
+\input{01/01-architecture.tex}
+
+\chapter{Redux}
+\input{01/02-redux.tex}
+
+\chapter{React Redux}
+\input{02/01-react-redux.tex}
+
+\chapter{React Redux: Subscribing}
+\input{02/02-rr-subscribe.tex}
+
+\chapter{React Redux: Dispatching}
+\input{03/01-rr-dispatch.tex}
+
+\chapter{API Actions}
+\input{04/01-redux-api.tex}
+
+\chapter{Building an App From Scratch}
+\input{04/design.tex}
+
+\nchapter{Glossary}
+\input{glossary.tex}
+
+
+\input{../../templates/colophon.tex}
+
+\end{document}

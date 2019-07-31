@@ -1,0 +1,49 @@
+\quoteinline{Without requirements or design, programming is the art of adding bugs to an empty text file}{Louis Srygley}
+
+Before starting to build an app you should go through various design stages:
+
+\begin{itemize}
+    \item Functional Spec (often from User Stories)
+    \item Wireframes
+    \item API Routes
+    \item Database Structure
+    \item Redux Actions
+\end{itemize}
+
+
+\section{Functional Spec}
+
+First we need to decide what functionality our app will have. On bigger projects this will usually be driven by \href{https://www.gov.uk/service-manual/agile-delivery/writing-user-stories}{\textbf{User Stories}}.
+\\
+
+When coming up with a functional spec it's important to focus on a \textbf{Minimum Viable Product}: what is the most minimal functionality the app could have while still being useful? By releasing early and often you can get useful feedback from users.
+
+\section{Wireframes}
+
+Next we'll need to create wireframes for our app. Make sure that everything from the functional spec is covered on the wireframes. Remember, wireframes are not concerned with styling, just about showing the functionality visually.
+
+\section{API Routes}
+
+It's useful to plan your API routes in advance. For each route you'll need to list:
+
+\begin{itemize}
+    \item The resource URL
+    \item The HTTP method (\texttt{GET}, \texttt{POST}, \texttt{PUT}, \texttt{PATCH}, \texttt{DELETE})
+    \item The controller and method it should point to
+\end{itemize}
+
+\section{Database Structure}
+
+It's also helpful to plan your database structure in advance. List the tables that you'll need, the columns for each table (name and type), and how the tables relate to one another (make sure you set up the foreign keys correctly).
+
+\section{Redux Actions}
+
+Finally we'll need to think about the Redux actions that our front-end app will need. For each action we'll need to think about:
+
+\begin{itemize}
+    \item Is it an API or State action?
+    \item What to call it (its \texttt{type} property)
+    \item What data does the action need (don't forget about \texttt{id})
+\end{itemize}
+
+Remember, for every API action you'll probably need a State action that takes the API response and updates the state.
