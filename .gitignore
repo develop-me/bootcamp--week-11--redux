@@ -6,6 +6,6 @@
 *.pyg
 _minted-*/
 examples/
-
+node_modules/
 .brokdb
 .cmt.bkp

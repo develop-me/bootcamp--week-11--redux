@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 
 import store from "./store";
 
-import App from "./App"
+import App from "./App";
 
 const render = () => {
     let state = store.getState();
@@ -20,7 +20,7 @@ const render = () => {
             handlePlayer2={ () => store.dispatch({ type: "score", who: "player2" }) }
             handleReset={ () => store.dispatch({ type: "reset" }) }
         />,
-        document.getElementById('root')
+        document.getElementById("root")
     );
 };
 
