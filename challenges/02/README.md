@@ -15,12 +15,12 @@ You'll need a folder structure like this:
 ```
 components/
     Player/
-        Player.jsx  # the React component
+        Player.js  # the React component
         Player1.js  # mapStateToProps with Player 1 info
         Player2.js  # mapStateToProps with Player 2 info
 ```
 
-Then in `App.jsx`:
+Then in `App.js`:
 
 ```js
 import Player1 from "./Player/Player1";

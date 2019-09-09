@@ -12,7 +12,7 @@ Make sure you add the Bootstrap 3 CSS file and add a `class` of `container` to `
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 ```
 
-Replace the `App.js` file with [`App.jsx`](App.jsx).
+Replace the `App.js` file with [`App.js`](App.js).
 
 Next, setup Redux in `index.js` with the initial state as follows:
 
@@ -54,7 +54,7 @@ Make sure you create a store and subscribe to it with a `render` function.
 
 - If the value of `player1` gets to 21 then you should show the "Player 1 Wins" message. If the value of `player2` gets to 21 then you should show the "Player 2 Wins" message. If no one has won yet, then the "Player x Wins" message should not display at all. The winner logic is **business logic**, so it should be in the reducer. The *wording* for the message is **view logic** so it should go in the component.
 
-- Split up your `App.jsx` into sensible sub-components and use props to pass down the relevant values. Remember, if you have two bits of UI that are basically the same they should reuse the same component
+- Split up your `App.js` into sensible sub-components and use props to pass down the relevant values. Remember, if you have two bits of UI that are basically the same they should reuse the same component
 
 - Hide the "+" buttons once someone wins the game
 
