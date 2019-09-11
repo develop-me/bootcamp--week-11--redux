@@ -1,10 +1,34 @@
+// some code contributed by Jonathan from cohort #13
+
+// import initial, for reset
 import initial from "./initial";
+
+
+// important values
 
 // winning score
 const aim = 21;
 
 // alternate serves on
 const alternate = 5;
+
+
+// helper functions
+
+// is there a difference of 2 between points
+const scoreGap = state => Math.abs(state.player1 - state.player2) >= 2;
+
+// has the minimum winning score been reached
+const winningScore = state => state.player1 >= aim || state.player2 >= aim;
+
+// work out who's won
+const getWinner = state => state.player1 > state.player2 ? 1 : 2;
+
+// total of scores
+const total = state => state.player1 + state.player2;
+
+
+// reducer functions
 
 // update score
 const score = (state, { who }) => {
@@ -15,28 +39,23 @@ const score = (state, { who }) => {
 };
 
 // calculate server
-const total = state => state.player1 + state.player2;
 const serving = state => {
+    // if past winning score, then alternate every two serves
+    const alt = winningScore(state) ? 2 : alternate;
+
     return {
         ...state,
-        serving: (Math.floor(total(state) / alternate) % 2) + 1,
+        serving: (Math.floor(total(state) / alt) % 2) + 1,
     };
 };
 
-// check if a is bigger than aim
-// and more than 1 ahead of b
-const won = (a, b) => a >= aim && a - b > 1;
+// work out who won
+const winner = state => ({
+    ...state,
+    winner: scoreGap(state) && winningScore(state) ? getWinner(state) : 0
+});
 
-// work out the winner
-const winner = state => {
-    const p1 = state.player1;
-    const p2 = state.player2;
-    return {
-        ...state,
-        winner: won(p1, p2) ? 1 : (won(p2, p1) ? 2 : 0),
-    };
-};
-
+// main reducer function
 const reducer = (state, action) => {
     switch (action.type) {
         // function composition
