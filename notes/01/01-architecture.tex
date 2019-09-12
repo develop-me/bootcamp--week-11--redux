@@ -2,6 +2,8 @@
 
 \quoteinline{Good architecture is necessary to give programs enough structure to be able to grow large without collapsing into a puddle of confusion}{Douglas Crockford}
 
+\pagebreak
+
 All the components that we've built so far have been very simple and, with the exception of the lifting state examples, have not needed to interact with any other components in our app. But consider a web-app like Trello:
 
 \img{\textwidth}{01/img/01-trello}{0em}{A Trello board}
@@ -10,7 +12,8 @@ It consists of many different components: a board component, a menu component, l
 \\
 
 Because React has one-way data flow, we know that the only way for components to interact with each other is to store the state higher-up the component hierarchy (``lifting'' state). This might at first seem like a limitation: if we had two-way data flow then this would not be necessary. But, remember, once you introduce two-way data flow components are no longer reusable as they become tied to the components that they are used in. If you have two-way data flow throughout your entire app it becomes impossible to know where certain bits of logic belong and it quickly becomes a mess of interconnected components that all need to know about all the other components.
-\\
+
+\pagebreak
 
 Hopefully by this point in the course you're starting to see a common theme: write small easy to understand ``black boxes'' and then combine them to create more complex behaviour:
 
@@ -27,6 +30,8 @@ The key concept of a React + Redux app is that we can build complex apps out of 
 
 
 \quoteinline{There are two ways of constructing a software design. One way is to make it so simple that there are obviously no deficiencies. And the other way is to make it so complicated that there are no obvious deficiencies}{C.A.R. Hoare}
+
+\pagebreak
 
 \section{Additional Resources}
 
