@@ -6,10 +6,15 @@ We're going to build a ping-pong scoring app using Redux and React.
 
 First, create a new app called `ping-pong` using `npm init react-app`. You'll also need to run `npm install redux` in the app directory once it's setup.
 
-Make sure you add the Bootstrap 3 CSS file and add a `class` of `container` to `<div id="root">` in `index.html`:
+Make sure you add the Bootstrap 4 CSS file and add a `class` of `container` to `<div id="root">` in `index.html`:
 
 ```html
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link
+    rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+    crossorigin="anonymous"
+/>
 ```
 
 Replace the `App.js` file with [`App.js`](App.js).
@@ -36,7 +41,7 @@ Make sure you create a store and subscribe to it with a `render` function.
 
 - Update your app so that when the "Reset" button is clicked both scores are reset to 0
 
-- Make it so that the "Serving" `<span>` only appears next to the current server. Assume that the server changes every 5 points. This is *business logic*, so you'll need to add an additional `serving` property to your state and update it using a reducer. You *don't* need an additional action to do this.
+- Make it so that classes `bg-dark` and `text-white` (on the player "card") alternate depending on who is serving. Assume that the server changes every 5 points. This is *business logic*, so you'll need to add an additional `serving` property to your state and update it using a reducer. You *don't* need an additional action to do this.
 
     **Hint**: You can **compose** functions. This can be useful in reducers if you want to change the state in more than one way for a single action.
 

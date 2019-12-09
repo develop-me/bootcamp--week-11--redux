@@ -11,42 +11,44 @@ const App = ({
 }) => (
     <React.Fragment>
         { /* header */ }
-        <header className="page-header">
+        <header className="jumbotron mt-4 mb-0">
             <h1>PongPing</h1>
         </header>
 
         { /* scores */ }
-        <div className="row">
-            <div className="col-xs-6">
-                <p>
-          Player 1
-                    { serving === 1 ? (
-                        <span className="pull-right label label-success">Serving</span>
+        <div className="row mb-4">
+            <div className="col-md-6 mt-4">
+                <div className={ "card text-center" + (serving === 1 ? "bg-dark text-white" : "") }>
+                    <h5 className="card-header">Player 1</h5>
+                    <div className="card-body">
+                        <p className="card-text display-1">{ player1 }</p>
+                    </div>
+                    { winner === 0 ? (
+                        <div className="card-footer">
+                            <button className="btn btn-primary form-control" onClick={ handlePlayer1 }>+</button>
+                        </div>
                     ) : null }
-                </p>
-                <p className="well">{ player1 }</p>
-                { winner === 0 ? (
-                    <button className="btn btn-primary" onClick={ handlePlayer1 }>+</button>
-                ) : null }
+                </div>
             </div>
 
-            <div className="col-xs-6">
-                <p>
-          Player 2
-                    { serving === 2 ? (
-                        <span className="pull-right label label-success">Serving</span>
+            <div className="col-md-6 mt-4">
+                <div className={ "card text-center" + (serving === 2 ? "bg-dark text-white" : "") }>
+                    <h5 className="card-header">Player 2</h5>
+                    <div className="card-body">
+                        <p className="card-text display-1">{ player2 }</p>
+                    </div>
+                    { winner === 0 ? (
+                        <div className="card-footer">
+                            <button className="btn btn-primary form-control" onClick={ handlePlayer2 }>+</button>
+                        </div>
                     ) : null }
-                </p>
-                <p className="well">{ player2 }</p>
-                { winner === 0 ? (
-                    <button className="btn btn-primary" onClick={ handlePlayer2 }>+</button>
-                ) : null }
+                </div>
             </div>
         </div>
 
         { /* winner message */}
         { winner > 0 ? (
-            <h2 className="jumbotron">Player { winner } wins!</h2>
+            <h2 className="alert alert-success">Player { winner } wins!</h2>
         ) : null }
 
         <hr />

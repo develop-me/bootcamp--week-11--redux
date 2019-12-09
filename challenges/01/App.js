@@ -3,27 +3,39 @@ import React from "react";
 const App = () => (
     <React.Fragment>
         {/* header */}
-        <header className="page-header">
+        <header className="jumbotron mt-4 mb-0">
             <h1>PongPing</h1>
         </header>
 
         {/* scores */}
-        <div className="row">
-            <div className="col-xs-6">
-                <p>Player 1 <span className="pull-right label label-success">Serving</span></p>
-                <p className="well">{/* player 1 score */}</p>
-                <button className="btn btn-primary">+</button>
+        <div className="row mb-4">
+            <div className="col-md-6 mt-4">
+                <div className="card text-center bg-dark text-white">
+                    <h5 className="card-header">Player 1</h5>
+                    <div className="card-body">
+                        <p className="card-text display-1">{/* player1 score */}</p>
+                    </div>
+                    <div className="card-footer">
+                        <button className="form-control btn btn-success">+</button>
+                    </div>
+                </div>
             </div>
 
-            <div className="col-xs-6">
-                <p>Player 2 <span className="pull-right label label-success">Serving</span></p>
-                <p className="well">{/* player 2 score */}</p>
-                <button className="btn btn-primary">+</button>
+            <div className="col-md-6 mt-4">
+                <div className="card text-center">
+                    <h5 className="card-header">Player 2</h5>
+                    <div className="card-body">
+                        <p className="card-text display-1">{/* player1 score */}</p>
+                    </div>
+                    <div className="card-footer">
+                        <button className="form-control btn btn-success">+</button>
+                    </div>
+                </div>
             </div>
         </div>
 
         { /* winner message */}
-        <h2 className="jumbotron">Player {/* winning player here */} wins!</h2>
+        <h2 className="alert alert-success">Player {/* winning player here */} wins!</h2>
 
         <hr />
 
