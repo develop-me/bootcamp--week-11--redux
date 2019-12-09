@@ -41,21 +41,35 @@ Make sure you create a store and subscribe to it with a `render` function.
 
 - Update your app so that when the "Reset" button is clicked both scores are reset to 0
 
-- Make it so that classes `bg-dark` and `text-white` (on the player "card") alternate depending on who is serving. Assume that the server changes every 5 points. This is *business logic*, so you'll need to add an additional `serving` property to your state and update it using a reducer. You *don't* need an additional action to do this.
+- Make it so that classes `bg-dark` and `text-white` (on the player "card") alternate depending on who is serving. Assume that the server changes every 5 points. This is *business logic*, so you'll need to add an additional `serving` property to your state and update it using a reducer.
+
+    Remember, actions are generally a response to an event and there isn't a "serving" event: it happens when the score changes. You already have all the actions you need.
 
     **Hint**: You can **compose** functions. This can be useful in reducers if you want to change the state in more than one way for a single action.
 
     ```javascript
-    // these are just examples, your functions will be different
-    const setScore = state => ({ ...state, score: state.score + 1 });
-    const setServer = state => ({ ...state, server: 2 });
-
-    // this
-    const newScore = setScore({ score: 0, server: 1 });
-    const updatedServer = setServer(newScore); // pass the updated state into setServer
+    // all these functions accept and return a valid copy of state
+    const player1 = state => ({ ...state, player1: state.player1 + 1 });
+    const player2 = state => ({ ...state, player2: state.player2 + 1 });
+    const server = state => ({ ...state, server: /* logic */ });
 
     // is the same as
-    const setScoreThenServer = setServer(setScore({ score: 0, server: 1 }));
+    const reducer = (state, action) => {
+        switch (action.type) {
+            // call the player1 function to update the score
+            // then immediately pass the result to server
+            // returns the result of both in inside-out order
+            case "player1": return server(player1(state));
+
+            // call the player2 function to update the score
+            // then immediately pass the result to server
+            // returns the result of both in inside-out order
+            case "player2": return server(player2(state));
+
+            // no matching actions
+            default: return state;
+        }
+    };
     ```
 
 - If the value of `player1` gets to 21 then you should show the "Player 1 Wins" message. If the value of `player2` gets to 21 then you should show the "Player 2 Wins" message. If no one has won yet, then the "Player x Wins" message should not display at all. The winner logic is **business logic**, so it should be in the reducer. The *wording* for the message is **view logic** so it should go in the component.
