@@ -46,8 +46,9 @@ Make sure you create a store and subscribe to it with a `render` function.
     **Hint**: You can **compose** functions. This can be useful in reducers if you want to change the state in more than one way for a single action.
 
     ```javascript
-    const setScore = state => { ...state, score: state.score + 1 };
-    const setServer = state => { ...state, server: 2 }; // your actual setServer function will do more than this
+    // these are just examples, your functions will be different
+    const setScore = state => ({ ...state, score: state.score + 1 });
+    const setServer = state => ({ ...state, server: 2 });
 
     // this
     const newScore = setScore({ score: 0, server: 1 });
