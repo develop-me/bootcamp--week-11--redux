@@ -30,7 +30,7 @@ The functionality is very simple:
 
 See [ToDo MVC](http://todomvc.com/examples/react/) for inspiration
 
-[Answers](https://github.com/develop-me/week-11--redux/tree/master/quiz/answers)
+[Answers](https://github.com/develop-me/bootcamp--week-11--redux/tree/master/quiz/answers)
 
 ---
 
