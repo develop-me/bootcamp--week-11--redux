@@ -1,7 +1,7 @@
 import React from "react";
 
 import {
-    Router,
+    BrowserRouter as Router,
     Route,
     Switch,
     Link,
@@ -13,25 +13,25 @@ import Settings from "./Settings";
 
 const App = () => (
     <Router>
-        <React.Fragment>
-            <h1>
+        <>
+            <h1 className="mt-4">
                 <Link to="/">iCounter 2.0</Link>
             </h1>
 
             <Switch>
-                <Route exact path="/" render={ () => (
-                    <React.Fragment>
+                <Route exact path="/">
+                    <>
                         <p><Link to="/settings">Settings</Link></p>
                         <Value />
                         <Buttons/>
-                    </React.Fragment>
-                )}/ >
+                    </>
+                </Route>
 
                 <Route exact path="/settings" component={ Settings } />
 
                 <p>Nothing found.</p>
             </Switch>
-        </React.Fragment>
+        </>
     </Router>
 );
 

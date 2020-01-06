@@ -1,7 +1,7 @@
 const App = ({ count }) => (
   { /* ...etc. */ }
 
-  <p className="well">{ count }</p>
+  <p className="card card-body">{ count }</p>
 
   { /* ...etc. */ }
 );

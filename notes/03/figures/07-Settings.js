@@ -1,5 +1,5 @@
 // import in the action
-import { step } from "../../data/actions";
+import { saveSettings } from "../../data/actions";
 
 // as before
 const mapStateToProps = state => { /* ...etc. */ };
@@ -8,7 +8,7 @@ const mapStateToProps = state => { /* ...etc. */ };
 // pass the value along to the action creator
 const mapDispatchToProps = dispatch => {
   return {
-    handleSave: value => dispatch(step(value)),
+    handleSave: value => dispatch(saveSettings(value)),
   };
 };
 

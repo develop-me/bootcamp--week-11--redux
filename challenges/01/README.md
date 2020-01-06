@@ -76,24 +76,25 @@ Make sure you create a store and subscribe to it with a `render` function.
 
 - Split up your `App.js` into sensible sub-components and use props to pass down the relevant values. Remember, if you have two bits of UI that are basically the same they should reuse the same component
 
-- Hide the "+" buttons once someone wins the game
+- Disable the "+" buttons once someone wins the game
 
 - The "Player x Wins" message should only show if the winning player is also ahead by at least two points
 
-- The server should alternate every two serves once the score goes above 21
+- The server should start to alternate every two serves if *both* scores get to 20
 
 - Keep track of the previous games and show them in a table below. It should store a data structure similar to the following for each game played:
 
     ```js
     {
-      "player_1": {
-        "score": 21,
-        "won": true
-      },
-      "player_2": {
-        "score": 17,
-        "won": false
-      }
+        player_1: {
+            score: 21,
+            won: true
+        },
+
+        player_2: {
+            score: 17,
+            won: false
+        }
     }
     ```
 

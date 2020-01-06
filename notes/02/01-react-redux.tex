@@ -1,7 +1,7 @@
 We've got Redux working with React, but there are a few issues:
 
 \begin{itemize}
-    \item Currently if our app has multiple components we'd have to pass down values from state \textit{and} the event handlers using props, which could get messy in a more complex app. It would also mean some components need to accept props purely to pass them through to other components, which makes them less reusable.
+    \item Currently if our app has multiple components we'd have to pass down values from state \textit{and} the event handlers using props, which could get messy in a more complex app. It would also mean some components need to accept props purely to pass them through to other components, which makes them less reusable. This is known as ``prop drilling''.
     \item The entire React app re-renders whenever the state updates: this is very inefficient, as it's likely that the state change only affects a few components. It would be better if we only re-render the components that use the specific bit of state that has changed.
 \end{itemize}
 

@@ -1,10 +1,10 @@
-export const step = (amount) => {
+export const saveSettings = (step) => {
   return {
-    type: "step",
+    type: "saveSettings",
 
     // we can use the action creator to tidy up the data
     // make sure it's definitely a number before it
     // gets to the reducer
-    amount: +amount,
+    step: +step,
   };
 };

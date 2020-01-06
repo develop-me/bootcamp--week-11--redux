@@ -3,7 +3,7 @@ import React from "react";
 const Value = ({
   value,
 }) => (
-  <p className="well">{ value }</p>
+  <p className="card card-body">{ value }</p>
 );
 
 export default Value;

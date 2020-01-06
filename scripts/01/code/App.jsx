@@ -2,9 +2,9 @@ import React from "react";
 
 const App = () => (
     <>
-        <h1>iCounter</h1>
+        <h1 className="mt-4">iCounter</h1>
 
-        <p className="well" />
+        <p className="card card-body" />
 
         <div>
             <button className="btn btn-primary">+</button>

@@ -1,9 +1,9 @@
-const step = (state, { amount }) => ({ ...state, step: amount });
+const saveSettings = (state, { step }) => ({ ...state, step: step });
 
 const reducer = (state, action) => {
   switch (action.type) {
     // ...etc.
-    case "step": return step(state, action);
+    case "saveSettings": return saveSettings(state, action);
     default: return state;
   }
 };

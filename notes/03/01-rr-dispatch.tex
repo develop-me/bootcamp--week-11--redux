@@ -112,6 +112,12 @@ Finally, to actually update the counter by the right amount we need to update th
 \inputminted{js}{03/figures/10-change.js}
 
 
+\begin{infobox}{Actions Represent Events}
+    It's best to think of an action as representing an event. So if a form is submitted (a single user interaction), even if it contains multiple inputs, you only want a single action.
+    \\
+
+    An action's payload can carry as much data as you like and can update as many bits of the global state as is necessary inside a reducer.
+\end{infobox}
 
 
 

@@ -6,7 +6,7 @@ import Tasks from "./Tasks";
 
 const App = () => (
     <>
-        <h1 className="page-heading">TüDü</h1>
+        <h1 className="jumbotron">TüDü</h1>
 
         <Loading>
             <New label="Add Task" />

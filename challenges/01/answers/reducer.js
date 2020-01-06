@@ -27,6 +27,14 @@ const getWinner = state => state.player1 > state.player2 ? 1 : 2;
 // total of scores
 const total = state => state.player1 + state.player2;
 
+// when to alternate server
+const alternateOn = state => {
+    const deuce = aim - 1;
+
+    // if both scores at 20 or more
+    return (state.player1 >= deuce && state.player2 >= deuce) ? 2 : alternate;
+}
+
 
 // reducer functions
 
@@ -39,15 +47,10 @@ const score = (state, { who }) => {
 };
 
 // calculate server
-const serving = state => {
-    // if past winning score, then alternate every two serves
-    const alt = winningScore(state) ? 2 : alternate;
-
-    return {
-        ...state,
-        serving: (Math.floor(total(state) / alt) % 2) + 1,
-    };
-};
+const serving = state => ({
+    ...state,
+    serving: (Math.floor(total(state) / alternateOn(state)) % 2) + 1,
+});
 
 // work out who won
 const winner = state => ({

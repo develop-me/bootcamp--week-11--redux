@@ -184,7 +184,7 @@ We'll need to add the \texttt{handleLoad} prop next:
     });
 
     // make sure to add mapDispatchToProps into connect
-    export default connect(mapStateToProps, mapDispatchToProps)(Value);
+    export default connect(mapStateToProps, mapDispatchToProps)(Loading);
 \end{minted}
 
 We're going to dispatch our first \textbf{API action creator}. It's going to look something like this:
@@ -196,11 +196,13 @@ We're going to dispatch our first \textbf{API action creator}. It's going to loo
     // create a function that returns another function
     // the second function takes an argument that
     // represents dispatch
-    export const getCounter = () => dispatch => {
-        // now use axios to make an API request
-        axios.get("/").then(({ data }) => {
-            console.log(data);
-        });
+    export const getCounter = () => {
+        return (dispatch) => {
+            // now use axios to make an API request
+            axios.get("/").then(({ data }) => {
+                console.log(data);
+            });
+        };
     };
 \end{minted}
 
@@ -254,8 +256,8 @@ Finally, we need to add a reducer to handle the new \texttt{loaded} action:
         ...state,
         // set loaded to true
         loaded: true,
-        count,
-        step,
+        count: count,
+        step: step,
     });
 
     const reducer = (state, action) => {
@@ -273,25 +275,27 @@ It's also common to need to send data to the API. Let's update the Settings form
 
 \begin{minted}{js}
     // import in existing state action
-    import { step } from "./state";
+    import { saveSettings } from "./state";
 
     // accept a value argument
-    export const putStep = value => dispatch => {
-        // make a PUT request
-        axios.put("/", {
-            // pass along the data to the API
-            // can pass in a regular object literal
-            // axios will convert into JSON
-            step: value
-        }).then(({ data }) => {
-            // get the step result off the data
-            // pass it along to the existing step action
-            dispatch(step(data.data.step));
-        });
+    export const putStep = (step) => {
+        return (dispatch) => {
+            // make a PUT request
+            axios.put("/", {
+                // pass along the data to the API
+                // can pass in a regular object literal
+                // axios will convert into JSON
+                step: step
+            }).then(({ data }) => {
+                // get the step result off the data
+                // pass it along to the existing saveSettings action
+                dispatch(saveSettings(data.data.step));
+            });
+        };
     };
 \end{minted}
 
-We can call the existing \texttt{step} action creator once the API request comes back.
+We can call the existing \texttt{saveSettings} action creator once the API request comes back.
 \\
 
 Now we just need to update the \texttt{<Settings>} container component to use the API action instead:
