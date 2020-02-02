@@ -2,7 +2,7 @@
 // accepts an amount variable so we can change it easily
 export const change = (amount) => {
   return {
-    type: "change",
+    type: "CHANGE",
     amount: amount,
   };
 };
@@ -11,6 +11,6 @@ export const change = (amount) => {
 // doesn't need any additional data, so no parameters
 export const reset = () => {
   return {
-    type: "reset",
+    type: "RESET",
   };
 };

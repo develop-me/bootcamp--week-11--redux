@@ -6,8 +6,8 @@ const change = (state, action) => {
 const reducer = (state, action) => {
   switch (action.type) {
     // call the change function and pass it the state and the action
-    case "change": return change(state, action);
-    case "reset": return initial;
+    case "CHANGE": return change(state, action);
+    case "RESET": return initial;
     default: return state;
   }
 };

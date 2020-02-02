@@ -1,2 +1,2 @@
-handleIncrement={() => store.dispatch({ type: "change", amount: 1 })}
-handleDecrement={() => store.dispatch({ type: "change", amount: -1 })}
+handleIncrement={() => store.dispatch({ type: "CHANGE", amount: 1 })}
+handleDecrement={() => store.dispatch({ type: "CHANGE", amount: -1 })}

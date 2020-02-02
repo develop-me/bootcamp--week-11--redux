@@ -63,8 +63,8 @@ const reducer = (state, action) => {
     switch (action.type) {
         // function composition
         // for multiple behaviours on one action
-        case "score": return winner(serving(score(state, action)));
-        case "reset": return initial;
+        case "SCORE": return winner(serving(score(state, action)));
+        case "RESET": return initial;
         default: return state;
     }
 };

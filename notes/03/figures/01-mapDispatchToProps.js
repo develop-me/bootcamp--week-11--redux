@@ -12,9 +12,9 @@ import Buttons from "./Buttons";
 // correct actions - these get merged in to any other props being passed in
 const mapDispatchToProps = dispatch => {
   return {
-    handleIncrement: () => dispatch({ type: "change", amount: 1 }),
-    handleDecrement: () => dispatch({ type: "change", amount: -1 }),
-    handleReset: () => dispatch({ type: "reset" }),
+    handleIncrement: () => dispatch({ type: "CHANGE", amount: 1 }),
+    handleDecrement: () => dispatch({ type: "CHANGE", amount: -1 }),
+    handleReset: () => dispatch({ type: "RESET" }),
   };
 };
 

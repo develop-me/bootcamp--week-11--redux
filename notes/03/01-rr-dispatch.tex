@@ -86,7 +86,7 @@ We'll need to dispatch a new type of action, so let's create an action creator f
 
 \inputminted{js}{03/figures/06-action.js}
 
-It's almost identical to the \texttt{change} action, except for the \texttt{type}.
+It's almost identical to the \texttt{CHANGE} action, except for the \texttt{type}.
 \\
 
 Now we need to dispatch this action when the form is submitted, passing along the data from the form. To do this we'll use the trick we learnt in week 9 for passing data out of a component: pass in a function that accepts an argument and then call that function from within the component.
@@ -107,7 +107,7 @@ If we look in the Redux developer tools we should now see an action being dispat
 Now if we look in the Redux developer tools you should see that the state is being updated.
 \\
 
-Finally, to actually update the counter by the right amount we need to update the \texttt{change} reducer:
+Finally, to actually update the counter by the right amount we need to update the \texttt{CHANGE} reducer:
 
 \inputminted{js}{03/figures/10-change.js}
 

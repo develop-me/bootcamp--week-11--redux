@@ -22,7 +22,7 @@
 - Replace blog challenges with todo list challenges
     * [ ] Add Todo API
     * [ ] Update challenges
-- Only use `change` action to demonstrate payload - go back to separate actions
+- Only use `CHANGE` action to demonstrate payload - go back to separate actions
 - Rewrite to use the challenges-style of teaching
     > Stop using the Blog API and use sets of smaller challenges. Maybe final quiz could be a single project from scratch?
 - Talk about actions before reducers in the Redux notes
