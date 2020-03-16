@@ -19,7 +19,7 @@ Make sure you add the Bootstrap 4 CSS file and add a `class` of `container` to `
 
 Replace the `App.js` file with [`App.js`](App.js).
 
-Next, setup Redux in `index.js` with the initial state as follows:
+Next, setup Redux in `index.js` with the initial state as follows (Section 2.1):
 
 ```js
 const initial = {
@@ -28,7 +28,7 @@ const initial = {
 };
 ```
 
-Make sure you create a store and subscribe to it with a `render` function.
+Make sure you create a store and subscribe to it with a `render` function (Section 2.4 & 2.6)
 
 
 ## Challenges
