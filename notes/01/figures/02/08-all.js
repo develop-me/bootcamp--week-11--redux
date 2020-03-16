@@ -6,7 +6,7 @@ const initial = {
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case "increment": return { ...state, count: state.count + 1 };
+    case "INCREMENT": return { ...state, count: state.count + 1 };
     default: return state;
   }
 };
@@ -18,4 +18,4 @@ store.subscribe(() => {
   console.log(state.count);
 });
 
-store.dispatch({ type: "increment" });
+store.dispatch({ type: "INCREMENT" });

@@ -16,9 +16,9 @@ const render = () => {
             player1= { state.player1 }
             player2= { state.player2 }
             winner={ state.winner }
-            handlePlayer1={ () => store.dispatch({ type: "score", who: "player1" }) }
-            handlePlayer2={ () => store.dispatch({ type: "score", who: "player2" }) }
-            handleReset={ () => store.dispatch({ type: "reset" }) }
+            handlePlayer1={ () => store.dispatch({ type: "SCORE", who: "player1" }) }
+            handlePlayer2={ () => store.dispatch({ type: "SCORE", who: "player2" }) }
+            handleReset={ () => store.dispatch({ type: "RESET" }) }
         />,
         document.getElementById("root")
     );

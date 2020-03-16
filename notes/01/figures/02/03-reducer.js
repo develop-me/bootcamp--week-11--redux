@@ -6,7 +6,7 @@ const reducer = (state, action) => {
   switch (action.type) {
     // using object spread to create a new object
     // with the same properties
-    case "increment": return { ...state, value: state.value + 1 };
+    case "INCREMENT": return { ...state, value: state.value + 1 };
     default: return state;
   }
 };

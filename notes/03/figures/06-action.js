@@ -1,6 +1,6 @@
 export const saveSettings = (step) => {
   return {
-    type: "saveSettings",
+    type: "SAVE_SETTINGS",
 
     // we can use the action creator to tidy up the data
     // make sure it's definitely a number before it

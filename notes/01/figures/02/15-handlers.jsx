@@ -1,5 +1,5 @@
 <App
   // ...etc.
-  handleDecrement={ () => store.dispatch({ type: "decrement" }) }
-  handleReset={ () => store.dispatch({ type: "reset" }) }
+  handleDecrement={ () => store.dispatch({ type: "DECREMENT" }) }
+  handleReset={ () => store.dispatch({ type: "RESET" }) }
 />,

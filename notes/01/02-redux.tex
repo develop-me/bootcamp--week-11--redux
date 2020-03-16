@@ -63,7 +63,7 @@ Next we need to decide how we want to be able to change the state. We put these 
 This is the \textit{only} way that the state can be changed. This means that just by looking at the initial state and the reducer it's possible to work out all possible ways in which the state can be changed.
 \\
 
-Actions, which we'll get to shortly, are just an object literal with a \texttt{type} property. By passing different \texttt{type}s, we can transform the state in different ways. For now, let's just accept an \texttt{increment} type, which will add \texttt{1} to the current \texttt{count}:
+Actions, which we'll get to shortly, are just an object literal with a \texttt{type} property. By passing different \texttt{type}s, we can transform the state in different ways. For now, let's just accept an \texttt{INCREMENT} type, which will add \texttt{1} to the current \texttt{count}:
 
 \inputminted{jsx}{01/figures/02/03-reducer.js}
 
@@ -123,7 +123,7 @@ Putting it all together in the \texttt{index.js} file:
 
 \inputminted{jsx}{01/figures/02/08-all.js}
 
-If you open this in the browser you should see \texttt{2} logged in the console: the value of the counter after the increment action has run. Try dispatching the \texttt{increment} action multiple times and you'll see that a new value is logged each time.
+If you open this in the browser you should see \texttt{2} logged in the console: the value of the counter after the increment action has run. Try dispatching the \texttt{INCREMENT} action multiple times and you'll see that a new value is logged each time.
 \\
 
 To recap:
@@ -152,7 +152,7 @@ We can pass the current \texttt{count} through using a prop on \texttt{<App>}. S
 
 \inputminted{jsx}{01/figures/02/11-value.jsx}
 
-We'll also need to handle the increment button click. Whenever the user clicks the ``+'' button we want to dispatch an \texttt{increment} action. We can pass this in as an anonymous function for now:
+We'll also need to handle the increment button click. Whenever the user clicks the ``+'' button we want to dispatch an \texttt{INCREMENT} action. We can pass this in as an anonymous function for now:
 
 \inputminted{jsx}{01/figures/02/12-props.jsx}
 
@@ -189,7 +189,7 @@ To add these behaviours we just need to add two more reducers:
 
 \inputminted{jsx}{01/figures/02/14-decrement.js}
 
-The \texttt{decrement} action simply subtracts \texttt{1} from \texttt{count}. The \texttt{reset} action sets the state back to the value of \texttt{initial}: resetting everything back to the initial values.\footnote{This is really neat. It lets you reset the \textit{entire} state of the app in one line. If you've spread your state logic around lots of separate components, this is incredibly complicated to do. In the pre-Redux days I once spent an entire day trying to fully reset the state of my entire app, spread around hundreds of files. I eventually gave up and just told the browser to refresh the page.}
+The \texttt{DECREMENT} action simply subtracts \texttt{1} from \texttt{count}. The \texttt{RESET} action sets the state back to the value of \texttt{initial}: resetting everything back to the initial values.\footnote{This is really neat. It lets you reset the \textit{entire} state of the app in one line. If you've spread your state logic around lots of separate components, this is incredibly complicated to do. In the pre-Redux days I once spent an entire day trying to fully reset the state of my entire app, spread around hundreds of files. I eventually gave up and just told the browser to refresh the page.}
 \\
 
 Now add props to pass in a dispatch function for each action:
@@ -201,7 +201,7 @@ And add the \texttt{onClick} event handlers for each button in \texttt{<App>}:
 \inputminted{jsx}{01/figures/02/16-App.jsx}
 
 
-Because actions are just object literals we can pass along any additional information that we like to the reducer. This is often referred to as the action's \textbf{payload}. For example we could combine the \texttt{increment} and \texttt{decrement} actions by instead passing along a number to change by:
+Because actions are just object literals we can pass along any additional information that we like to the reducer. This is often referred to as the action's \textbf{payload}. For example we could combine the \texttt{INCREMENT} and \texttt{DECREMENT} actions by instead passing along a number to change by:
 
 \inputminted{jsx}{01/figures/02/17-change.js}
 
