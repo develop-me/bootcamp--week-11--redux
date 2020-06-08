@@ -92,12 +92,10 @@ Put something like the following (with the correct base URL and key) in \texttt{
 
     // return a new version of axios with useful settings applied
     export default axios.create({
-        baseURL: "http://username.restful.training/api/counters",
-        params: {
-            key: "b1a4b1a4b1a4-api-key-b1a4b1a4ab1a4",
-        },
+        baseURL: "https://restful.training/api/counters",
         headers: {
             Accept: "application/json",
+            Authorization: "Bearer b1a4b1a4b1a4-api-key-b1a4b1a4ab1a4",
         },
     });
 \end{minted}
