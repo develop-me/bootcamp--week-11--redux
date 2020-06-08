@@ -45,7 +45,9 @@ Make sure you create a store and subscribe to it with a `render` function (Secti
 
     Remember, actions are generally a response to an event and there isn't a "serving" event: it happens when the score changes. You already have all the actions you need.
 
-    **Hint**: You can **compose** functions. This can be useful in reducers if you want to change the state in more than one way for a single action.
+    **Hint**: You don't have to, but you can **compose** functions. This can be useful in reducers if you want to change the state in more than one way for a single action.
+
+    The following is just an example, your naming may differ:
 
     ```javascript
     // all these functions accept and return a valid copy of state
@@ -53,30 +55,48 @@ Make sure you create a store and subscribe to it with a `render` function (Secti
     const player2 = state => ({ ...state, player2: state.player2 + 1 });
     const server = state => ({ ...state, server: /* logic */ });
 
-    // is the same as
+    // we can composer functions in the reducer
+    // to build up complex behaviours
     const reducer = (state, action) => {
         switch (action.type) {
             // call the player1 function to update the score
             // then immediately pass the result to server
             // returns the result of both in inside-out order
-            case "player1": return server(player1(state));
+            case "PLAYER_1_SCORED": return server(player1(state));
 
             // call the player2 function to update the score
             // then immediately pass the result to server
             // returns the result of both in inside-out order
-            case "player2": return server(player2(state));
+            case "PLAYER_2_SCORED": return server(player2(state));
 
-            // no matching actions
-            default: return state;
+            // ... other switch cases
         }
     };
+    ```
+
+    This:
+
+    ```js
+    return server(player1(state));
+    ```
+
+    Is the same (without the intermediary variables) as:
+
+    ```js
+    // update scores
+    let scoreState = player1(state);
+
+    // update server
+    let serverState = server(scoreState);
+
+    return serverState;
     ```
 
 - If the value of `player1` gets to 21 then you should show the "Player 1 Wins" message. If the value of `player2` gets to 21 then you should show the "Player 2 Wins" message. If no one has won yet, then the "Player x Wins" message should not display at all. The winner logic is **business logic**, so it should be in the reducer. The *wording* for the message is **view logic** so it should go in the component.
 
 - Split up your `App.js` into sensible sub-components and use props to pass down the relevant values. Remember, if you have two bits of UI that are basically the same they should reuse the same component
 
-- Disable the "+" buttons once someone wins the game
+- Disable the "+" buttons once someone wins the game. Remember buttons have a `disabled` attribute.
 
 - The "Player x Wins" message should only show if the winning player is also ahead by at least two points
 
