@@ -1,9 +1,11 @@
 ## Redux
 
 - Action creators are a good place to tidy up data
+- `initial` -> `initialState`
 - Don't need to updated any components to get API stuff working - use action creators to tidy up data
 - Mention `getState()` in API action creators explicitly
 - Explicitly mention state/action files in sr/actions
+- Split `mapDispatchToProps` and the forms stuff
 - Use Flux Standard Actions?
 - Use `.js` for all JSX components
     * [ ] "Open all with current extension as..."
