@@ -107,7 +107,7 @@ If we look in the Redux developer tools we should now see an action being dispat
 Now if we look in the Redux developer tools you should see that the state is being updated.
 \\
 
-Finally, to actually update the counter by the right amount we need to update the \texttt{CHANGE} reducer:
+To actually update the counter by the right amount we need to update the \texttt{CHANGE} reducer:
 
 \js{}{03/figures/10-change}
 
@@ -120,39 +120,13 @@ Finally, to actually update the counter by the right amount we need to update th
 \end{infobox}
 
 
-
-\section{Programmatic Navigation}
-
-It would be nice if our app could navigate to the homepage once we save the settings. To do this we can use ReactRouter's \textbf{history} functionality.
-\\
-
-First, create a new file \texttt{src/history.js}:
-
-\js{}{03/figures/11-history}
-
-Then add a \texttt{history} prop to your \texttt{<Router>}:
-
-\begin{minted}{javascript}
-    // import your history file
-    import history from "../history";
-
-    // use Router instead of BrowserRouter
-    import { Router } from "react-router-dom";
-\end{minted}
-
-\begin{minted}{javascript}
-    // pass history in as a prop to the Router
-    <Router history={ history }>
-\end{minted}
-
-Now we can import this file and use it elsewhere to change the URL:
-
+Finally, we could import use ReactRouter's \texttt{history} object to update the URL when the form is submitted:
 
 \begin{minted}{jsx}
     import history from "../../history";
 \end{minted}
 
-\js{}{03/figures/12-mapDispatch}
+\js{}{03/figures/11-mapDispatch}
 
 
 
