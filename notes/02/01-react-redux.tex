@@ -23,7 +23,7 @@ We need to \texttt{import} the \texttt{<Provider>} component from \texttt{react-
     import { Provider } from "react-redux";
 \end{minted}
 
-\inputminted{jsx}{02/figures/01/01-index.js}
+\js{}{02/figures/01/01-index}
 
 The \texttt{<Provider>} attaches the Redux store to the \texttt{connect()} function. In the next two chapters we'll look at how to use this to subscribe to the store, get data from state, and dispatch actions from any component in our app.
 \\
@@ -33,7 +33,7 @@ Now we don't need to manually subscribe to the store, as the \texttt{<Provider>}
 
 While we're in \texttt{index.js} it might also be worth splitting out some of the Redux code into separate files. We'll put the reducers into \texttt{src/data/reducers.js} and the initial state into \texttt{src/data/initial.js}:\footnote{As with the \texttt{<Provider>}, we'd probably do this from the beginning when starting an app from scratch.}
 
-\begin{minted}{js}
+\begin{minted}{jsx}
     import initial from "./data/initial";
     import reducers from "./data/reducers";
 \end{minted}
