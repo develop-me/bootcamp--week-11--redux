@@ -1,5 +1,5 @@
 const App = () => (
-    <React.Fragment>
+    <>
         {/* header */}
         <header className="jumbotron mt-4 mb-0">
             <h1>PongPing</h1>
@@ -39,7 +39,7 @@ const App = () => (
 
         { /* reset button */}
         <button className="btn btn-danger">Reset</button>
-    </React.Fragment>
+    </>
 );
 
 export default App;

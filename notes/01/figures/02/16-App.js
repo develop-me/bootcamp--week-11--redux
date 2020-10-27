@@ -3,7 +3,7 @@ const App = ({
   handleDecrement,
   handleReset,
 }) => (
-  <React.Fragment>
+  <>
     { /* ...etc. */ }
 
     <button
@@ -17,5 +17,5 @@ const App = ({
     >Reset</button>
 
     { /* ...etc. */ }
-  </React.Fragment>
+  </>
 );

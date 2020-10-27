@@ -7,7 +7,7 @@ const App = ({
   handleDecrement,
   handleReset,
 }) => (
-  <React.Fragment>
+  <>
     <h1>iCounter</h1>
 
     <Value value={ value } />
@@ -17,7 +17,7 @@ const App = ({
       handleDecrement={ handleDecrement }
       handleReset={ handleReset }
     />
-  </React.Fragment>
+  </>
 );
 
 export default App;

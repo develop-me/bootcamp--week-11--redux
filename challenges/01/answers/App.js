@@ -7,7 +7,7 @@ const App = ({
     handlePlayer2,
     handleReset,
 }) => (
-    <React.Fragment>
+    <>
         { /* header */ }
         <header className="jumbotron mt-4 mb-0">
             <h1>PongPing</h1>
@@ -53,7 +53,7 @@ const App = ({
 
         { /* reset button */}
         <button className="btn btn-danger" onClick={ handleReset }>Reset</button>
-    </React.Fragment>
+    </>
 );
 
 export default App;
