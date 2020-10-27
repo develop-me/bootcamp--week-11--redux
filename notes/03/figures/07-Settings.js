@@ -8,7 +8,7 @@ const mapStateToProps = state => { /* ...etc. */ };
 // pass the value along to the action creator
 const mapDispatchToProps = dispatch => {
   return {
-    handleSave: value => dispatch(saveSettings(value)),
+    handleSave: data => dispatch(saveSettings(data)),
   };
 };
 

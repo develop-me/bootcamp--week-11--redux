@@ -1,8 +1,8 @@
 const mapDispatchToProps = dispatch => {
   return {
-    handleSave: value => {
+    handleSave: data => {
       // dispatch the action
-      dispatch(step(value));
+      dispatch(step(data));
 
       // go to the homepage
       history.push("/");
