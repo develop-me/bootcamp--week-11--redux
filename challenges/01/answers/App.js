@@ -1,5 +1,3 @@
-import React from "react";
-
 const App = ({
     player1,
     player2,

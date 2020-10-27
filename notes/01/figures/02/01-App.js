@@ -1,5 +1,3 @@
-import React from "react";
-
 const App = () => (
   <React.Fragment>
     <h1>iCounter</h1>

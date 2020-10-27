@@ -1,5 +1,3 @@
-import React from "react";
-
 import Value from "./Value";
 import Buttons from "./Buttons";
 
