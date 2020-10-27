@@ -25,7 +25,7 @@ const App = () => (
                 <div className="card text-center">
                     <h5 className="card-header">Player 2</h5>
                     <div className="card-body">
-                        <p className="card-text display-1">{/* player1 score */}</p>
+                        <p className="card-text display-1">{/* player2 score */}</p>
                     </div>
                     <div className="card-footer">
                         <button className="form-control btn btn-success">+</button>
