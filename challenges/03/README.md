@@ -12,5 +12,6 @@
 
     - It should always go to alternating every two serves when you get to a deuce situation
     - You don't need to use ReactRouter, as it wouldn't make sense to go to the scoring part of the app *unless* the user has entered in the information.
+    - Remember, `App.js` is just a React component like any other
 
 ![Settings](img/01-settings.png)

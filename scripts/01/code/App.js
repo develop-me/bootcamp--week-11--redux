@@ -1,5 +1,3 @@
-import React from "react";
-
 const App = () => (
     <>
         <h1 className="mt-4">iCounter</h1>

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import Loading from "./Loading";
 import New from "./New";
 import Tasks from "./Tasks";

@@ -1,25 +1,25 @@
 First things first, let's break up our iCounter app into a few separate components. This is not strictly necessary, but it will make the code examples more like an actual app made up of lots of components.
 \\
 
-We're going to put all our JSX files into a directory called \texttt{components}, this will keep the \texttt{src} directory clean. First move \texttt{App.jsx} into \texttt{src/components} and make sure you update the \texttt{import} in \texttt{index.jsx}.
+We're going to put all our JSX files into a directory called \texttt{components}, this will keep the \texttt{src} directory clean. First move \texttt{App} into \texttt{src/components} and make sure you update the \texttt{import} in \texttt{index}.
 \\
 
-We'll create a \texttt{<Value>} component in \texttt{src/components/Value/index.jsx}:
+We'll create a \texttt{<Value>} component in \texttt{src/components/Value/index.js}:
 
-\inputminted{jsx}{02/figures/02/01-Value.jsx}
+\js{}{02/figures/02/01-Value}
 
-And a \texttt{<Buttons>} component in \texttt{src/components/Buttons/index.jsx}:
+And a \texttt{<Buttons>} component in \texttt{src/components/Buttons/index.js}:
 
-\inputminted{jsx}{02/figures/02/02-Buttons.jsx}
+\js{}{02/figures/02/02-Buttons}
 
 
-\begin{infobox}{Importing \texttt{index.jsx}}
-    If we have a file called \texttt{index.js} or \texttt{index.jsx} in a directory then we can import it using \texttt{import} just by using the directory name, just as you can with an \texttt{index.html} file.
+\begin{infobox}{Importing \texttt{index}}
+    If we have a file called \texttt{index.js} in a directory then we can import it using \texttt{import} just by using the directory name, just as you can with an \texttt{index.html} file.
 \end{infobox}
 
 We can then update the \texttt{<App>} component to use it:
 
-\inputminted{jsx}{02/figures/02/03-App.jsx}
+\js{}{02/figures/02/03-App}
 
 
 
@@ -31,15 +31,15 @@ Now we can use React Redux's \texttt{connect()} function to join up our componen
 We'll need to create a \textbf{container component} which uses the \texttt{connect} function.
 \\
 
-First, rename your \texttt{<Value>} component from \texttt{src/components/Value/index.jsx} to \texttt{src/components/Value/Value.jsx} (you'll see why in a second). This will break your app temporarily, but we'll fix it shortly.
+First, rename your \texttt{<Value>} component from \texttt{src/components/Value/index.js} to \texttt{src/components/Value/Value.js} (you'll see why in a second). This will break your app temporarily, but we'll fix it shortly.
 \\
 
-Now create a new file \texttt{src/components/Values/index.js} (\texttt{js} \textit{not} \texttt{jsx} - this file won't contain any JSX). This is going to hold the container component.
+Now create a new file \texttt{src/components/Values/index}. This is going to hold the container component.
 \\
 
 The idea of a container component is to wrap around a regular React component and pass in some props. This is useful because the container component can use the \texttt{connect} function to get values from the store. It returns a regular React component that we can use elsewhere.
 
-\inputminted{jsx}{02/figures/02/04-Value-index.js}
+\js{}{02/figures/02/04-Value-index}
 
 First we import the \texttt{connect} function. This talks to the \texttt{<Provider>} wrapper that we put around the entire app and which has access to the Redux store. We also import in the component that we're interested in giving access to the store, in this case the \texttt{<Value>} component.
 \\
@@ -47,7 +47,6 @@ First we import the \texttt{connect} function. This talks to the \texttt{<Provid
 Then we create a function called \texttt{mapStateToProps}.\footnote{You can call it whatever you like, it's just a variable that we pass to \texttt{connect}, but it's pretty standard to stick to this name.} We're going to pass this function to \texttt{connect}, which will then call it for us whenever the Redux store updates the state (using \texttt{store.subscribe()}). When this happens it will pass in the latest version of the state and merge whatever is returned into the props for the wrapped component.
 \\
 
-You'll probably need to restart the webpack server at this point, as changing from \texttt{index.jsx} to \texttt{index.js} probably broke it.
 
 \img{12cm}{02/img/02/mapStateToProps-before}{2em}{Before: no way to access the Redux store}
 
@@ -74,11 +73,11 @@ You'll probably need to restart the webpack server at this point, as changing fr
 
 Now we can update \texttt{index.js} to not pass the \texttt{count} prop in:
 
-\stdinputminted{jsx}{02/figures/02/05-index.js}
+\js{}{02/figures/02/05-index}
 
 And we can also update \texttt{<App>} to not deal with the \texttt{count} prop (as it doesn't get passed in now anyway):
 
-\inputminted{jsx}{02/figures/02/06-App.jsx}
+\js{}{02/figures/02/06-App}
 
 
 \section{Own Props}

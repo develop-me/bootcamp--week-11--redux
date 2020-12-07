@@ -1,6 +1,6 @@
-const change = (state, action) => {
+const change = (state, { amount }) => {
   return {
     ...state,
-    count: state.count + (action.amount * state.step),
+    count: state.count + (amount * state.step),
   };
 };

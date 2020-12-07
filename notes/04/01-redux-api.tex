@@ -110,7 +110,7 @@ It's fairly common to want to load some information from an API when you first d
 
 We'll need to keep track of whether the app has loaded the API request, so let's add an extra bit of state:
 
-\begin{minted}{js}
+\begin{minted}{jsx}
     const initial = {
         // set it to false initially
         loaded: false,
@@ -121,7 +121,7 @@ We'll need to keep track of whether the app has loaded the API request, so let's
 
 We're going to create a \texttt{<Loading>} component which we can show while the user is waiting for a response:
 
-\inputminted{jsx}{04/figures/01-Loading.jsx}
+\js{}{04/figures/01-Loading}
 
 We've created a class based component (you'll see why later) that accepts a \texttt{children} and a \texttt{loaded} prop. We can now wrap the two parts of our app in this component and if \texttt{loaded} is \texttt{true} they will display, otherwise it will show a loading animation.
 \\
@@ -146,7 +146,7 @@ And also the settings component (in case the user loads \texttt{/settings} initi
 
 Let's wrap the \texttt{<Loading>} component with a container component so that it can access the \texttt{loaded} property from state:
 
-\begin{minted}{js}
+\begin{minted}{jsx}
     import { connect } from "react-redux";
     import Loading from "./Loading";
 
@@ -159,7 +159,7 @@ Let's wrap the \texttt{<Loading>} component with a container component so that i
 
 Now, it looks like our app is always loading. We'll need to do an API request and, when it's successful, let the \texttt{<Loading>} component know about it. We can use the \texttt{componentDidMount} method to trigger an action when the component first shows:
 
-\begin{minted}{js}
+\begin{minted}{jsx}
     componentDidMount() {
         if (!this.props.loaded) {
             this.props.handleLoad();
@@ -172,7 +172,7 @@ First, check to see if \texttt{loaded} is \texttt{true}, because if it is there'
 
 We'll need to add the \texttt{handleLoad} prop next:
 
-\begin{minted}{js}
+\begin{minted}{jsx}
     // ...etc.
 
     // we'll need to dispatch and action, so we need mapDispatchToProps
@@ -187,7 +187,7 @@ We'll need to add the \texttt{handleLoad} prop next:
 
 We're going to dispatch our first \textbf{API action creator}. It's going to look something like this:
 
-\begin{minted}{js}
+\begin{minted}{jsx}
     // import in the pre-configured axios object
     import axios from "../../axios";
 
@@ -212,7 +212,7 @@ We're going to make a request to the API, wait for it to return the data, and th
 
 Let's update the \texttt{mapDispatchToProps} to call this API action creator:
 
-\begin{minted}{js}
+\begin{minted}{jsx}
     import { getCounter } from "../../data/actions/api";
 
     // ...etc.
@@ -239,7 +239,7 @@ First we'll need to create a state action:
 
 And then call this from the API action creator:
 
-\begin{minted}{js}
+\begin{minted}{jsx}
     axios.get("/").then(({ data }) => {
         // pass the data property of the API data
         dispatch(loaded(data.data));
@@ -248,7 +248,7 @@ And then call this from the API action creator:
 
 Finally, we need to add a reducer to handle the new \texttt{loaded} action:
 
-\begin{minted}{js}
+\begin{minted}{jsx}
     // destructure the action
     const loaded = (state, { count, step }) => ({
         ...state,
@@ -271,7 +271,7 @@ Finally, we need to add a reducer to handle the new \texttt{loaded} action:
 
 It's also common to need to send data to the API. Let's update the Settings form so it submits the new \texttt{step} value to the API. First, let's create the API action:
 
-\begin{minted}{js}
+\begin{minted}{jsx}
     // import in existing state action
     import { saveSettings } from "./state";
 
@@ -298,7 +298,7 @@ We can call the existing \texttt{SAVE\_SETTINGS} action creator once the API req
 
 Now we just need to update the \texttt{<Settings>} container component to use the API action instead:
 
-\begin{minted}{js}
+\begin{minted}{jsx}
     import { putStep } from "../../data/actions/api";
 
     // ...etc.

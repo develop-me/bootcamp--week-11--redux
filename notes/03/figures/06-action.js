@@ -1,4 +1,4 @@
-export const saveSettings = (step) => {
+export const saveSettings = ({ step }) => {
   return {
     type: "SAVE_SETTINGS",
 

@@ -34,7 +34,7 @@ Basically Redux takes the idea of lifting state to its logical conclusion: all o
 
 Let's build our first proper app: one where the data and views are separate. We're going to use a really basic \texttt{<App>} component:
 
-\inputminted{jsx}{01/figures/02/01-App.jsx}
+\js{}{01/figures/02/01-App}
 
 We want to get it so that when we click on the buttons they change the value of the counter. But our state is going to live inside Redux, not inside the component itself.
 
@@ -46,7 +46,7 @@ First we need to decide on the shape of our state and create an \textbf{initial 
 
 In this case we just need to store a single number:
 
-\stdinputminted{jsx}{01/figures/02/02-initial.js}
+\js{}{01/figures/02/02-initial}
 
 We create an object literal with a \texttt{count} property and set it equal to \texttt{1}.
 \\
@@ -65,7 +65,7 @@ This is the \textit{only} way that the state can be changed. This means that jus
 
 Actions, which we'll get to shortly, are just an object literal with a \texttt{type} property. By passing different \texttt{type}s, we can transform the state in different ways. For now, let's just accept an \texttt{INCREMENT} type, which will add \texttt{1} to the current \texttt{count}:
 
-\inputminted{jsx}{01/figures/02/03-reducer.js}
+\js{}{01/figures/02/03-reducer}
 
 The reducer has to return a \textit{new} state object: you can't just update a property and then return it. This is where the spread operator comes in handy. If you ever think you've updated the state but nothing re-renders, it's probably because you've updated an existing data structure, rather than returning a new one.
 \\
@@ -73,7 +73,7 @@ The reducer has to return a \textit{new} state object: you can't just update a p
 The reducer is just a regular JavaScript function, so we can test that it works without needing to use Redux:
 
 
-\inputminted{jsx}{01/figures/02/04-reducer-test.js}
+\js{}{01/figures/02/04-reducer-test}
 
 
 \section{The Store}
@@ -95,7 +95,7 @@ Then import \texttt{createStore}:
 
 We can then pass the initial state and reducer to \texttt{createStore}, which gives us back a new Redux store:
 
-\inputminted{jsx}{01/figures/02/05-createStore.js}
+\js{}{01/figures/02/05-createStore}
 
 
 
@@ -106,7 +106,7 @@ Next, we will \textbf{subscribe} to the store, which will let us know when the s
 
 We can use the \texttt{getState()} method of \texttt{store} to \textit{get} the current state. This doesn't allow us to change the state - we can only do that with actions.
 
-\inputminted{jsx}{01/figures/02/06-subscribe.js}
+\js{}{01/figures/02/06-subscribe}
 
 
 
@@ -114,14 +114,14 @@ We can use the \texttt{getState()} method of \texttt{store} to \textit{get} the 
 
 Finally, we can \textbf{dispatch} some actions: each time we dispatch an action, the store runs the reducer function for us, which looks at the action \texttt{type} property and transforms the state appropriately. Once the reducer has returned a value, the function we passed to \texttt{store.subscribe()} will be run and we can update our page appropriately.
 
-\inputminted{jsx}{01/figures/02/07-dispatch.js}
+\js{}{01/figures/02/07-dispatch}
 
 \hr
 
 
 Putting it all together in the \texttt{index.js} file:
 
-\inputminted{jsx}{01/figures/02/08-all.js}
+\js{}{01/figures/02/08-all}
 
 If you open this in the browser you should see \texttt{2} logged in the console: the value of the counter after the increment action has run. Try dispatching the \texttt{INCREMENT} action multiple times and you'll see that a new value is logged each time.
 \\
@@ -146,19 +146,19 @@ If you've understood up to here then you understand Redux. The harder part is ge
 
 Now let's get Redux working with React. We'll need to tell React to re-render the \texttt{App} component whenever the state changes. We can do this by calling \texttt{ReactDOM}'s \texttt{render()} method inside our \texttt{subscribe} function:
 
-\inputminted{jsx}{01/figures/02/10-render.js}
+\js{}{01/figures/02/10-render}
 
 We can pass the current \texttt{count} through using a prop on \texttt{<App>}. So we need to update the \texttt{<App>} component to accept the \texttt{count} prop:
 
-\inputminted{jsx}{01/figures/02/11-value.jsx}
+\js{}{01/figures/02/11-value}
 
 We'll also need to handle the increment button click. Whenever the user clicks the ``+'' button we want to dispatch an \texttt{INCREMENT} action. We can pass this in as an anonymous function for now:
 
-\inputminted{jsx}{01/figures/02/12-props.jsx}
+\js{}{01/figures/02/12-props}
 
 And then add this as an event handler inside our \texttt{<App>}:
 
-\inputminted{jsx}{01/figures/02/13-handleIncrement.jsx}
+\js{}{01/figures/02/13-handleIncrement}
 
 
 Generally we'll only use \texttt{dispatch} for event handlers: if the user hasn't done anything then there's not normally a good reason for the state to change. If you need to make multiple changes to the state in response to a specific action then you should put all of that code in the reducer.
@@ -173,7 +173,7 @@ Generally we'll only use \texttt{dispatch} for event handlers: if the user hasn'
 
     Once you've added it to your browser you need to add an extra argument to your \texttt{createStore} call, which links everything up:
 
-    \inputminted{jsx}{01/figures/02/09-dev-tools.js}
+    \js{}{01/figures/02/09-dev-tools}
 
     The Redux Dev Tools let you look at what's going on with the Redux store: which actions have been dispatched, how the state has changed each time, and the current state. It even lets you change the history of your app by skipping actions or rewinding time. This is only possible because the app's state is fully controlled by Redux.
 \end{infobox}
@@ -187,37 +187,37 @@ Next, let's get the decrement and reset buttons working.
 
 To add these behaviours we just need to add two more reducers:
 
-\inputminted{jsx}{01/figures/02/14-decrement.js}
+\js{}{01/figures/02/14-decrement}
 
 The \texttt{DECREMENT} action simply subtracts \texttt{1} from \texttt{count}. The \texttt{RESET} action sets the state back to the value of \texttt{initial}: resetting everything back to the initial values.\footnote{This is really neat. It lets you reset the \textit{entire} state of the app in one line. If you've spread your state logic around lots of separate components, this is incredibly complicated to do. In the pre-Redux days I once spent an entire day trying to fully reset the state of my entire app, spread around hundreds of files. I eventually gave up and just told the browser to refresh the page.}
 \\
 
 Now add props to pass in a dispatch function for each action:
 
-\inputminted{jsx}{01/figures/02/15-handlers.jsx}
+\js{}{01/figures/02/15-handlers}
 
 And add the \texttt{onClick} event handlers for each button in \texttt{<App>}:
 
-\inputminted{jsx}{01/figures/02/16-App.jsx}
+\js{}{01/figures/02/16-App}
 
 
 Because actions are just object literals we can pass along any additional information that we like to the reducer. This is often referred to as the action's \textbf{payload}. For example we could combine the \texttt{INCREMENT} and \texttt{DECREMENT} actions by instead passing along a number to change by:
 
-\inputminted{jsx}{01/figures/02/17-change.js}
+\js{}{01/figures/02/17-change}
 
 Now we can pass in a \texttt{amount} property to change the value by any amount we like:
 
-\inputminted{jsx}{01/figures/02/18-change-action.js}
+\js{}{01/figures/02/18-change-action}
 
 
 It's also fairly common practice to pull complex functions out of the reducer to keep our code a bit clearer:
 
-\inputminted{js}{01/figures/02/19-change-fn.js}
+\js{}{01/figures/02/19-change-fn}
 
 
 We can now use object destructuring to tidy up the code:
 
-\inputminted{jsx}{01/figures/02/20-destructure.js}
+\js{}{01/figures/02/20-destructure}
 
 
 \section{Persistence}
@@ -233,14 +233,14 @@ First, install the package:
 
 Then we'll need to update the \texttt{import} statements in \texttt{index.js}:
 
-\begin{minted}{js}
+\begin{minted}{jsx}
     import { createStore, compose } from "redux";
     import persistState from "redux-localstorage";
 \end{minted}
 
 Finally, we need to change how we create the store, to include the localstorage middleware. This is a little bit messy because we want to keep using the Redux developer tools:
 
-\begin{minted}{js}
+\begin{minted}{jsx}
     const composeEnhancers =
         window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
     const store = createStore(

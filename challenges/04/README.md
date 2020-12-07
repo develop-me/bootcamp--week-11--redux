@@ -16,6 +16,8 @@ Remove the `localStorage` plugin and get thunks setup.
 
 Normally APIs will do a lot of the work for you. The PingPong API will work out who the current server is and also whether anyone has won, so you'll be able to remove this logic from your reducers.
 
+**Hint**: remember you can use your action creators to tidy up data from the API so that it better matches your existing application state structure. You shouldn't need to update your whole app to match the API property naming.
+
 - To create a new game use the [`POST`](https://github.com/develop-me/restful.training#post-ping-ponggames) method
     - You'll need to store the `id` of the current game in your app state, as you'll need to this to update the score
 - Each time a player scores make a [`PATCH`](https://github.com/develop-me/restful.training#patch-ping-ponggamesidscore) request to `/ping-pong/games/<id>/score`: use the data you get back from the API to set the winner and server properties in your app state

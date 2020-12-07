@@ -94,7 +94,10 @@ Make sure you create a store and subscribe to it with a `render` function (Secti
 
 - If the value of `player1` gets to 21 then you should show the "Player 1 Wins" message. If the value of `player2` gets to 21 then you should show the "Player 2 Wins" message. If no one has won yet, then the "Player x Wins" message should not display at all. The winner logic is **business logic**, so it should be in the reducer. The *wording* for the message is **view logic** so it should go in the component.
 
-- Split up your `App.js` into sensible sub-components and use props to pass down the relevant values. Remember, if you have two bits of UI that are basically the same they should reuse the same component
+- Split up your `App.js` into sensible sub-components and use props to pass down the relevant values. Remember, if you have two bits of UI that are basically the same they should reuse the same component.
+
+
+## Tricksy
 
 - Disable the "+" buttons once someone wins the game. Remember buttons have a `disabled` attribute.
 
@@ -121,7 +124,7 @@ Make sure you create a store and subscribe to it with a `render` function (Secti
 - Use the `redux-localstorage` middleware to store your app state between page refreshes
 
 
-## Tricksy
+## Über-Tricksy 🕺
 
 Add an Esperanto version of your app and a toggle between English and Esperanto.
 
@@ -137,17 +140,4 @@ You could create separate Esperanto components or you could use an object litera
 - "Reset" -> "Restarigi"
 - "Player 1 Wins" -> "Ludanto 1 Venkoj"
 
-
-## Über-Tricksy
-
-Remove the `redux-localstorage` middleware ([this will be easy if you're using Git properly](https://git-scm.com/docs/git-revert)) and then see if you can achieve the same result yourself. You're *not* trying to create a Redux middleware, just getting the same behaviour using `store.subscribe()`.
-
-Use [`localStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API) to keep your state between page refreshes.
-
-Some things to note:
-
-- You can call `store.subscribe()` multiple times, passing it a different function to call when the state updates. All the functions that you pass it will run each time.
-
-- `localStorage`, as with most DOM things, only works with strings. So you'll need to be careful how you store your data. Maybe look at the [`JSON`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON#Methods) object.
-
-- Make sure it works if there is nothing in `localStorage`. You can use the "Storage" tab in Firefox Dev Tools to inspect and edit the stored values.
+[Google Translate](https://translate.google.com/#view=home&op=translate&sl=en&tl=eo) for any other things

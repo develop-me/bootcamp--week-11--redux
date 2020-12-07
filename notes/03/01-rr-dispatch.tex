@@ -1,9 +1,9 @@
 Next we'll want to update iCounter so that we don't have to pass the event handler functions via the \texttt{<App>} component. We'll do this in much the same way as with the \texttt{<Value>} component, except this time we're not interested in the state, we're interested in \textit{dispatching} actions.
 \\
 
-First rename the \texttt{<Buttons>} component from  \texttt{src/components/Buttons/index.jsx} to \texttt{src/components/Buttons/Buttons.jsx} - which will temporarily break our app. Then we'll create a container component in \texttt{src/Buttons/index.js}. This time we're going to use the second argument of \texttt{connect} - this is normally called \texttt{mapDispatchToProps}:
+First rename the \texttt{<Buttons>} component from  \texttt{src/components/Buttons/index.js} to \texttt{src/components/Buttons/Buttons} - which will temporarily break our app. Then we'll create a container component in \texttt{src/Buttons/index.js}. This time we're going to use the second argument of \texttt{connect} - this is normally called \texttt{mapDispatchToProps}:
 
-\inputminted{js}{03/figures/01-mapDispatchToProps.js}
+\js{}{03/figures/01-mapDispatchToProps}
 
 Much of this is the same as using \texttt{mapStateToProps}: we import in the \texttt{connect} function, import in the component that we want to pass props to, and use \texttt{connect} at the bottom to export a new component.
 \\
@@ -24,14 +24,14 @@ In larger apps it's not uncommon for different event handlers to dispatch the sa
 
 First, create a file called \texttt{src/data/actions}. Then add action creators for the two action types:\footnote{These could be made shorter using object property shorthand and skipping the \texttt{return} by wrapping in brackets.}
 
-\inputminted{js}{03/figures/02-action-creators.js}
+\js{}{03/figures/02-action-creators}
 
 We export each function separately, as we might require them in different files.
 \\
 
 Now we can use these in the container component:
 
-\inputminted{js}{03/figures/03-ButtonContainer.js}
+\js{}{03/figures/03-ButtonContainer}
 
 All we've done is created some functions to create the action object literals for us, rather than writing them out each time.
 
@@ -55,7 +55,7 @@ You might naturally assume that this state should be part of the application sta
 
 Let's add a ``Settings'' page to our app so that we can change how much the counter goes up by:
 
-\inputminted{jsx}{03/figures/04-Settings.jsx}
+\js{}{03/figures/04-Settings}
 
 Currently it's just a basic controlled component with an \texttt{<input>} element and a ``Save'' button. On submit we just prevent default. We'll use ReactRouter to show this page when the user visits \texttt{/settings}.
 \\
@@ -65,7 +65,7 @@ We set the initial \texttt{step} state to \texttt{props.step}, so we need to pas
 
 First, add a \texttt{step} property to the initial state and set it to \texttt{1}:
 
-\begin{minted}{js}
+\begin{minted}{jsx}
     const initial = {
         count: 1,
         step: 1,
@@ -74,7 +74,7 @@ First, add a \texttt{step} property to the initial state and set it to \texttt{1
 
 Now we need to pass this value into the \texttt{<Settings>} component. We'll do this by wrapping it in a container component and use \texttt{mapStateToProps}:
 
-\inputminted{js}{03/figures/05-SettingsProps.js}
+\js{}{03/figures/05-SettingsProps}
 
 Try updating the initial state and seeing if the step value changes.
 \\
@@ -84,7 +84,7 @@ Next we need to make it so that when the form is submitted the data is dispatche
 
 We'll need to dispatch a new type of action, so let's create an action creator for this purpose:
 
-\inputminted{js}{03/figures/06-action.js}
+\js{}{03/figures/06-action}
 
 It's almost identical to the \texttt{CHANGE} action, except for the \texttt{type}.
 \\
@@ -94,22 +94,22 @@ Now we need to dispatch this action when the form is submitted, passing along th
 
 We can pass in a function that has access to \texttt{dispatch} by using \texttt{mapDispatchToProps}:
 
-\inputminted{js}{03/figures/07-Settings.js}
+\js{}{03/figures/07-Settings}
 
 Now we just need to call this function from inside the \texttt{<Settings>} component when the form is submitted:
 
-\inputminted{js}{03/figures/08-Settings.jsx}
+\js{}{03/figures/08-Settings}
 
 If we look in the Redux developer tools we should now see an action being dispatched! But the state isn't changing. The last thing we need to do it update the reducers to do something with this action:
 
-\inputminted{js}{03/figures/09-reducers.js}
+\js{}{03/figures/09-reducers}
 
 Now if we look in the Redux developer tools you should see that the state is being updated.
 \\
 
-Finally, to actually update the counter by the right amount we need to update the \texttt{CHANGE} reducer:
+To actually update the counter by the right amount we need to update the \texttt{CHANGE} reducer:
 
-\inputminted{js}{03/figures/10-change.js}
+\js{}{03/figures/10-change}
 
 
 \begin{infobox}{Actions Represent Events}
@@ -120,39 +120,13 @@ Finally, to actually update the counter by the right amount we need to update th
 \end{infobox}
 
 
-
-\section{Programmatic Navigation}
-
-It would be nice if our app could navigate to the homepage once we save the settings. To do this we can use ReactRouter's \textbf{history} functionality.
-\\
-
-First, create a new file \texttt{src/history.js}:
-
-\inputminted{js}{03/figures/11-history.js}
-
-Then add a \texttt{history} prop to your \texttt{<Router>}:
-
-\begin{minted}{javascript}
-    // import your history file
-    import history from "../history";
-
-    // use Router instead of BrowserRouter
-    import { Router } from "react-router-dom";
-\end{minted}
-
-\begin{minted}{javascript}
-    // pass history in as a prop to the Router
-    <Router history={ history }>
-\end{minted}
-
-Now we can import this file and use it elsewhere to change the URL:
-
+Finally, we could import use ReactRouter's \texttt{history} object to update the URL when the form is submitted:
 
 \begin{minted}{jsx}
     import history from "../../history";
 \end{minted}
 
-\inputminted{js}{03/figures/12-mapDispatch.js}
+\js{}{03/figures/11-mapDispatch}
 
 
 
