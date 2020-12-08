@@ -34,7 +34,7 @@ We'll need to create a \textbf{container component} which uses the \texttt{conne
 First, rename your \texttt{<Value>} component from \texttt{src/components/Value/index.js} to \texttt{src/components/Value/Value.js} (you'll see why in a second). This will break your app temporarily, but we'll fix it shortly.
 \\
 
-Now create a new file \texttt{src/components/Values/index}. This is going to hold the container component.
+Now create a new file \texttt{src/components/Values/index.js}. This is going to hold the container component.
 \\
 
 The idea of a container component is to wrap around a regular React component and pass in some props. This is useful because the container component can use the \texttt{connect} function to get values from the store. It returns a regular React component that we can use elsewhere.
