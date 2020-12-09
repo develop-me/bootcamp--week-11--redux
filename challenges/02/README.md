@@ -34,3 +34,7 @@ Once you've done that, update your app to use `<Provider>` and `connect` instead
     import Player1 from "./Player/Player1";
     import Player2 from "./Player/Player2";
     ```
+
+### Tricksy
+
+If you got onto any of the tricksy challenges from yesterday, you may need to add additional `mapStateToProps` components as well.
