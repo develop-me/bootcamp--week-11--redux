@@ -25,7 +25,9 @@ const App = () => (
                     </>
                 </Route>
 
-                <Route exact path="/settings" component={ Settings } />
+                <Route exact path="/settings">
+                    <Settings />
+                </Route>
 
                 <p>Nothing found.</p>
             </Switch>
