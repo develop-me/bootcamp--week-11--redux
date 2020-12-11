@@ -2,6 +2,8 @@
 
 **Use Git to make a commit every time you get an answer working. Use sensible commit messages. This will give you the confidence to try things without worrying about getting back to a working state.**
 
+You may want to create a new branch to work from for the API stuff, as you'll probably end up changing quite a lot of your code.
+
 ---
 
 ## PongPing
@@ -36,6 +38,20 @@ Normally APIs will do a lot of the work for you. The PingPong API will work out 
         }).then(({ data }) => {
             // dispatch a state action
         });
+    };
+    ```
+
+    - Rather than updating your app state to match the API response (which has underscores in it 🤮), you could write a function to transform one into the other, which you could reuse whenever you need to:
+
+    ```javascript
+    const mapResponseToState = ({ id, complete, winning_score, change_serve, player_1, player_2 }) => {
+        // your state structure may differ
+        return {
+            player1: player_1.score,
+            player2: player_2.score,
+            p1Name: player_1.name,
+            // ...etc.
+        };
     };
     ```
 
